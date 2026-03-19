@@ -19,7 +19,7 @@ const menuItems: MenuItem[] = [
   { href: "https://www.daolanx.me", label: "BLOG", color: "#3399FF" },
   
 
-  { href: "https://work.daolanx.me", label: "WORK", color: "#9966FF" },
+  { href: "https://demo.daolanx.com", label: "Work", color: "#9966FF" },
   
 
   { href: "https://github.com/daolanx", label: "GITHUB", color: "#FF9900" },
