@@ -1,17 +1,17 @@
+import { getTranslations } from "next-intl/server";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const DELAY = { PARAGRAPH: 100, BUTTON: 200 } as const;
 
-export function Hero() {
+export async function Hero() {
+  const t = await getTranslations("Hero");
   return (
     <section
       className="relative flex min-h-[90vh] flex-col justify-center overflow-hidden
                  px-6 md:px-12 lg:px-24 py-20 md:py-26 lg:py-30"
     >
       <div className="relative z-10 mx-auto max-w-4xl">
-        {/* ── 标题区域 ── */}
         <div className="relative">
-          {/* 装饰性代码符号 */}
           <span
             aria-hidden="true"
             className="pointer-events-none select-none absolute -top-16 -left-16 lg:-top-24 lg:-left-24
@@ -28,15 +28,14 @@ export function Hero() {
                        tracking-tight text-balance animate-float
                        mb-8 md:mb-12"
           >
-            你好，我是 Dax,
+            {t("greeting")}
             <br className="hidden sm:block" />
-            <span className="italic font-normal">前端独立开发者</span>，
+            <span className="italic font-normal">{t("role")}</span>,
             <br className="hidden md:block" />
-            专注于构建优雅、高性能的 Web 体验。
+            {t("tagline")}
           </h1>
         </div>
 
-        {/* ── 简介段落 ── */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div
             className="md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3
@@ -44,18 +43,14 @@ export function Hero() {
           >
             <ScrollReveal delay={DELAY.PARAGRAPH}>
               <p className="font-body-lg text-base md:text-lg text-on-surface-variant leading-relaxed">
-                运用现代技术栈转化复杂业务逻辑，注重代码架构的清晰性与界面的极致交互。
-                崇尚技术极简主义，用最精简的代码实现最核心的价值。
+                {t("description")}
               </p>
             </ScrollReveal>
           </div>
         </div>
 
-        {/* ── 联系方式 ── */}
         <ScrollReveal delay={DELAY.BUTTON}>
           <div className="mt-14 md:mt-20">
-        
-
             <div className="flex flex-wrap items-stretch gap-3 md:gap-4">
               <a
                 href="https://github.com/daolanx"
@@ -71,7 +66,7 @@ export function Hero() {
                   code
                 </span>
                 <span className="font-label-caps text-sm md:text-base tracking-widest uppercase">
-                  GitHub
+                  {t("github")}
                 </span>
               </a>
 
@@ -89,7 +84,7 @@ export function Hero() {
                   tag
                 </span>
                 <span className="font-label-caps text-sm md:text-base tracking-widest uppercase">
-                  Twitter
+                  {t("twitter")}
                 </span>
               </a>
 
@@ -105,7 +100,7 @@ export function Hero() {
                   mail
                 </span>
                 <span className="font-label-caps text-sm md:text-base tracking-widest uppercase">
-                  Email
+                  {t("email")}
                 </span>
               </a>
             </div>

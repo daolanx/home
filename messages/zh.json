@@ -1,0 +1,66 @@
+{
+  "Hero": {
+    "greeting": "你好，我是 Dax,",
+    "role": "前端独立开发者",
+    "tagline": "专注于构建优雅、高性能的 Web 体验。",
+    "description": "运用现代技术栈转化复杂业务逻辑，注重代码架构的清晰性与界面的极致交互。崇尚技术极简主义，用最精简的代码实现最核心的价值。",
+    "github": "GitHub",
+    "twitter": "Twitter",
+    "email": "Email"
+  },
+  "Showcases": {
+    "sectionTitle": "近期作品",
+    "viewAll": "全部作品",
+    "liveDemo": "在线演示",
+    "viewSource": "访问源码",
+    "projects": {
+      "ecommerce": {
+        "title": "企业级 B2B 电商中台",
+        "description": "从零构建的高性能管理后台，处理百万级 SKU 数据。采用微前端架构设计，优化了复杂的表单渲染与状态流转体验。"
+      },
+      "dataviz": {
+        "title": "金融数据可视化大屏",
+        "description": "基于 Canvas 与 WebGL 开发的实时监控面板，保障 60fps 丝滑渲染。"
+      },
+      "devflow": {
+        "title": "DevFlow API 平台",
+        "description": "为开发者打造的 API 文档与调试工具，采用极简的左右分栏布局，提供流畅的类 IDE 编辑体验。"
+      },
+      "uilib": {
+        "title": "UI Component Library",
+        "description": "开源的无头组件库方案，关注可访问性 (a11y) 与键盘交互，被超过 50 个内部项目采用。"
+      }
+    }
+  },
+  "Skills": {
+    "sectionTitle": "技术栈",
+    "groups": {
+      "core": "核心框架",
+      "design": "样式与设计",
+      "engineering": "工程化"
+    }
+  },
+  "Articles": {
+    "sectionTitle": "近期博客",
+    "viewAll": "全部博客",
+    "posts": {
+      "ddd": {
+        "category": "架构",
+        "title": "在大型 React 应用中实施领域驱动设计 (DDD) 的实践经验"
+      },
+      "rendering": {
+        "category": "性能",
+        "title": "彻底理解现代浏览器渲染流水线：从 CSSOM 到 Paint"
+      },
+      "tailwind": {
+        "category": "设计系统",
+        "title": "基于 Tailwind CSS 构建高可维护的内部组件库指南"
+      }
+    }
+  },
+  "Contact": {
+    "heading": "联系我",
+    "description": "如果您有合作意向或任何问题，欢迎随时联系。我始终乐于探讨新项目、创意想法，或是参与您愿景的机会。",
+    "emailCta": "Email"
+  }
+}

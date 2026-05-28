@@ -1,0 +1,66 @@
+{
+  "Hero": {
+    "greeting": "Hi, I'm Dax,",
+    "role": "Freelance Frontend Developer",
+    "tagline": "building elegant, high-performance web experiences.",
+    "description": "Transforming complex business logic with modern tech stacks, focusing on clean architecture and极致 interactions. Advocating technical minimalism, delivering core value with the leanest code.",
+    "github": "GitHub",
+    "twitter": "Twitter",
+    "email": "Email"
+  },
+  "Showcases": {
+    "sectionTitle": "Recent Work",
+    "viewAll": "All Projects",
+    "liveDemo": "Live Demo",
+    "viewSource": "View Source",
+    "projects": {
+      "ecommerce": {
+        "title": "Enterprise B2B E-commerce Platform",
+        "description": "A high-performance admin dashboard built from scratch, handling millions of SKU data. Designed with micro-frontend architecture, optimizing complex form rendering and state flow."
+      },
+      "dataviz": {
+        "title": "Financial Data Visualization",
+        "description": "Real-time monitoring dashboard built with Canvas & WebGL, ensuring silky smooth 60fps rendering."
+      },
+      "devflow": {
+        "title": "DevFlow API Platform",
+        "description": "API documentation and debugging tool for developers, featuring a minimalist split-pane layout with fluid IDE-like editing experience."
+      },
+      "uilib": {
+        "title": "UI Component Library",
+        "description": "Open-source headless component library focused on accessibility (a11y) and keyboard interaction, adopted by over 50 internal projects."
+      }
+    }
+  },
+  "Skills": {
+    "sectionTitle": "Tech Stack",
+    "groups": {
+      "core": "Core Frameworks",
+      "design": "Styling & Design",
+      "engineering": "Engineering"
+    }
+  },
+  "Articles": {
+    "sectionTitle": "Latest Blog",
+    "viewAll": "All Posts",
+    "posts": {
+      "ddd": {
+        "category": "Architecture",
+        "title": "Practical Guide to Domain-Driven Design in Large React Applications"
+      },
+      "rendering": {
+        "category": "Performance",
+        "title": "Understanding Modern Browser Rendering Pipeline: From CSSOM to Paint"
+      },
+      "tailwind": {
+        "category": "Design Systems",
+        "title": "Building Maintainable Internal Component Libraries with Tailwind CSS"
+      }
+    }
+  },
+  "Contact": {
+    "heading": "Get in Touch",
+    "description": "If you have a collaboration inquiry or any questions, feel free to reach out. I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.",
+    "emailCta": "Email"
+  }
+}
