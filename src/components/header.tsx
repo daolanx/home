@@ -2,11 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Languages, Home } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
 
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const rafRef = useRef(0);
+  const { theme, toggleTheme, mounted } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,11 +43,12 @@ export function Header() {
         {/* Action buttons */}
         <div className="flex items-center gap-4">
           <button
+            onClick={toggleTheme}
             className="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors"
             aria-label="Toggle theme"
           >
             <span className="material-symbols-outlined text-[18px]">
-              light_mode
+              {mounted && theme === "dark" ? "dark_mode" : "light_mode"}
             </span>
           </button>
           <button

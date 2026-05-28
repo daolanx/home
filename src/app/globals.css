@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
@@ -59,6 +61,25 @@
       transform: translateY(0);
     }
   }
+}
+
+/* Dark mode overrides */
+.dark {
+  --color-background: #1a1c1a;
+  --color-on-background: #e2e3de;
+  --color-surface: #1a1c1a;
+  --color-on-surface: #e2e3de;
+  --color-surface-variant: #444846;
+  --color-on-surface-variant: #c4c7c5;
+  --color-surface-container: #252725;
+  --color-surface-container-low: #1e201e;
+  --color-surface-container-lowest: #0f110f;
+  --color-surface-tint: #a8c8a0;
+  --color-primary: #a8c8a0;
+  --color-on-primary: #1a3400;
+  --color-secondary: #8ed1c7;
+  --color-outline: #8e918e;
+  --color-outline-variant: #444846;
 }
 
 /* Reveal animation */
