@@ -4,9 +4,9 @@ export function Contact() {
       <div className="max-w-[1280px] mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-16 md:mb-24">
           <div className="flex flex-col gap-4 md:gap-6">
-            <h2 className="font-display-lg text-4xl md:text-5xl lg:text-6xl text-on-surface tracking-tight mb-2 md:mb-4">Contact Me</h2>
+            <h2 className="font-display-lg text-4xl md:text-5xl lg:text-6xl text-on-surface tracking-tight mb-2 md:mb-4">联系我</h2>
             <p className="font-body-lg text-sm md:text-base text-on-surface-variant max-w-md leading-relaxed">
-              Interested in collaborating or have a question? Feel free to reach out. I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+              如果您有合作意向或任何问题，欢迎随时联系。我始终乐于探讨新项目、创意想法，或是参与您愿景的机会。
             </p>
           </div>
           <nav aria-label="Social links" className="flex flex-col gap-6">
@@ -48,7 +48,7 @@ export function Contact() {
               <span className="w-2 h-2 bg-primary" />DevPortfolio
             </span>
             <span className="font-label-caps text-[8px] md:text-[10px] text-on-surface-variant tracking-widest uppercase">
-              &copy; {new Date().getFullYear()} Expert Generalist. Built with technical rigor.
+              &copy; {new Date().getFullYear()} Dax Studio. 以技术严谨构建。
             </span>
           </div>
         </div>

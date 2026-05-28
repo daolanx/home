@@ -36,7 +36,7 @@ export function Hero() {
         <ScrollReveal className="flex flex-wrap items-center gap-6 mt-12 md:mt-16">
           <a className="group relative inline-flex items-center justify-center px-6 md:px-8 py-3 md:py-4 bg-primary text-on-primary font-label-caps text-[10px] md:text-xs hover:bg-surface-tint transition-all duration-300 overflow-hidden w-full sm:w-auto" href="#work">
             <span className="relative z-10 flex items-center">
-              Initiate View Work
+              查看作品
               <span className="material-symbols-outlined ml-3 text-[16px] group-hover:translate-x-1 transition-transform">east</span>
             </span>
             <div className="absolute inset-0 h-full w-0 bg-white/20 transition-all duration-300 ease-out group-hover:w-full z-0" />
@@ -48,7 +48,7 @@ export function Hero() {
         <div className="w-[1px] h-24 bg-surface-variant relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1/2 bg-primary animate-[float_2s_ease-in-out_infinite]" />
         </div>
-        <span className="font-label-caps text-xs text-on-surface-variant tracking-widest uppercase -rotate-90 origin-center mt-6">Scroll</span>
+        <span className="font-label-caps text-xs text-on-surface-variant tracking-widest uppercase -rotate-90 origin-center mt-6">滚动</span>
       </div>
     </section>
   );

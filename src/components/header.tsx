@@ -15,9 +15,9 @@ export function Header() {
   }, []);
 
   const navLinks = [
-    { href: "#work", label: "Work" },
-    { href: "#skills", label: "Skills" },
-    { href: "#blog", label: "Blog" },
+    { href: "#work", label: "作品" },
+    { href: "#skills", label: "技能" },
+    { href: "#blog", label: "博客" },
   ];
 
   return (
@@ -81,8 +81,8 @@ export function Header() {
               EN
             </button>
           </div>
-          <a className="inline-flex items-center justify-center px-6 py-2 border border-primary text-primary font-label-caps text-xs hover:bg-primary hover:text-on-primary transition-colors duration-200 group" href="#" aria-label="Download resume">
-            Resume
+          <a className="inline-flex items-center justify-center px-6 py-2 border border-primary text-primary font-label-caps text-xs hover:bg-primary hover:text-on-primary transition-colors duration-200 group" href="#" aria-label="下载简历">
+            简历
             <span className="material-symbols-outlined ml-2 text-[14px] group-hover:translate-x-1 transition-transform" aria-hidden="true">arrow_forward</span>
           </a>
         </div>
@@ -117,8 +117,8 @@ export function Header() {
               EN
             </button>
           </div>
-          <a className="inline-flex items-center justify-center px-6 py-2 bg-primary text-on-primary font-label-caps text-xs transition-colors duration-200" href="#" aria-label="Download resume">
-            Resume
+          <a className="inline-flex items-center justify-center px-6 py-2 bg-primary text-on-primary font-label-caps text-xs transition-colors duration-200" href="#" aria-label="下载简历">
+            简历
           </a>
         </div>
       </div>
