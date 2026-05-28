@@ -2,6 +2,55 @@
 
 import { useEffect, useRef } from "react";
 
+/* ── 配置 ── */
+const CONFIG = {
+  DENSITY: 10000,            // 每个粒子占的像素面积
+  MAX: 100,                  // 粒子上限
+  SIZE_MIN: 0.5,
+  SIZE_RANGE: 1.5,
+  SPEED: 0.5,
+  OPACITY_MIN: 0.1,
+  OPACITY_RANGE: 0.3,
+
+  MOUSE_RADIUS: 150,         // 鼠标排斥半径
+  MOUSE_STRENGTH: 0.01,
+
+  LINK_DIST: 100,            // 连线最大距离
+  LINK_OPACITY: 0.1,         // 连线最大透明度
+  LINK_WIDTH: 0.5,
+} as const;
+
+// 预计算平方值，热循环中避免 sqrt
+const MOUSE_RADIUS_SQ = CONFIG.MOUSE_RADIUS ** 2;
+const LINK_DIST_SQ = CONFIG.LINK_DIST ** 2;
+
+/* ── 粒子结构（纯数据，无原型链开销） ── */
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  vx: number;
+  vy: number;
+  opacity: number;
+}
+
+function createParticle(w: number, h: number): Particle {
+  return {
+    x: Math.random() * w,
+    y: Math.random() * h,
+    size: CONFIG.SIZE_MIN + Math.random() * CONFIG.SIZE_RANGE,
+    vx: (Math.random() - 0.5) * CONFIG.SPEED,
+    vy: (Math.random() - 0.5) * CONFIG.SPEED,
+    opacity: CONFIG.OPACITY_MIN + Math.random() * CONFIG.OPACITY_RANGE,
+  };
+}
+
+function initParticles(w: number, h: number): Particle[] {
+  const count = Math.min(Math.floor((w * h) / CONFIG.DENSITY), CONFIG.MAX);
+  return Array.from({ length: count }, () => createParticle(w, h));
+}
+
+/* ── 组件 ── */
 export function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -12,120 +61,129 @@ export function ParticleCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // 无障碍：减少动态偏好
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const dpr = window.devicePixelRatio || 1;
     let particles: Particle[] = [];
-    let mouseX = 0;
-    let mouseY = 0;
+    let mouseX = -Infinity;
+    let mouseY = -Infinity;
     let animationId: number;
+    let resizeTimer: ReturnType<typeof setTimeout>;
 
-    class Particle {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      baseOpacity: number;
-
-      constructor(width: number, height: number) {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.size = Math.random() * 1.5 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.5;
-        this.speedY = (Math.random() - 0.5) * 0.5;
-        this.baseOpacity = Math.random() * 0.3 + 0.1;
-      }
-
-      update(width: number, height: number) {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.x < 0) this.x = width;
-        if (this.x > width) this.x = 0;
-        if (this.y < 0) this.y = height;
-        if (this.y > height) this.y = 0;
-
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 150) {
-          this.x -= dx * 0.01;
-          this.y -= dy * 0.01;
-        }
-      }
-
-      draw(ctx: CanvasRenderingContext2D) {
-        ctx.fillStyle = `rgba(0, 0, 0, ${this.baseOpacity})`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
+    /* ── canvas 尺寸 + 高 DPI ── */
     function resizeCanvas() {
-      canvas!.width = window.innerWidth;
-      canvas!.height = window.innerHeight;
-      initParticles();
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas!.width = w * dpr;
+      canvas!.height = h * dpr;
+      canvas!.style.width = `${w}px`;
+      canvas!.style.height = `${h}px`;
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      particles = initParticles(w, h);
     }
 
-    function initParticles() {
-      particles = [];
-      const numParticles = Math.min(
-        Math.floor((canvas!.width * canvas!.height) / 10000),
-        100
-      );
-      for (let i = 0; i < numParticles; i++) {
-        particles.push(new Particle(canvas!.width, canvas!.height));
-      }
+    function debouncedResize() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resizeCanvas, 150);
     }
 
-    function animateCanvas() {
-      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+    /* ── 动画循环 ── */
+    function animate() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const len = particles.length;
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+      ctx!.clearRect(0, 0, w, h);
 
-          if (distance < 100) {
+      // ── 连线 ──
+      ctx!.lineWidth = CONFIG.LINK_WIDTH;
+      for (let i = 0; i < len; i++) {
+        const a = particles[i];
+        for (let j = i + 1; j < len; j++) {
+          const b = particles[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < LINK_DIST_SQ) {
+            const alpha = CONFIG.LINK_OPACITY * (1 - distSq / LINK_DIST_SQ);
+            ctx!.strokeStyle = `rgba(0,0,0,${alpha})`;
             ctx!.beginPath();
-            ctx!.strokeStyle = `rgba(0, 0, 0, ${0.1 - distance / 1000})`;
-            ctx!.lineWidth = 0.5;
-            ctx!.moveTo(particles[i].x, particles[i].y);
-            ctx!.lineTo(particles[j].x, particles[j].y);
+            ctx!.moveTo(a.x, a.y);
+            ctx!.lineTo(b.x, b.y);
             ctx!.stroke();
           }
         }
-
-        particles[i].update(canvas!.width, canvas!.height);
-        particles[i].draw(ctx!);
       }
 
-      animationId = requestAnimationFrame(animateCanvas);
+      // ── 粒子更新 & 绘制 ──
+      for (let i = 0; i < len; i++) {
+        const p = particles[i];
+
+        // 移动
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // 边缘环绕
+        if (p.x < 0) p.x += w;
+        else if (p.x > w) p.x -= w;
+        if (p.y < 0) p.y += h;
+        else if (p.y > h) p.y -= h;
+
+        // 鼠标排斥（平方距离比较，无 sqrt）
+        const mdx = mouseX - p.x;
+        const mdy = mouseY - p.y;
+        if (mdx * mdx + mdy * mdy < MOUSE_RADIUS_SQ) {
+          p.x -= mdx * CONFIG.MOUSE_STRENGTH;
+          p.y -= mdy * CONFIG.MOUSE_STRENGTH;
+        }
+
+        // 绘制
+        ctx!.fillStyle = `rgba(0,0,0,${p.opacity})`;
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx!.fill();
+      }
+
+      animationId = requestAnimationFrame(animate);
     }
 
+    /* ── 事件 ── */
     function handleMouseMove(e: MouseEvent) {
       mouseX = e.clientX;
       mouseY = e.clientY;
     }
 
-    resizeCanvas();
-    animateCanvas();
+    function handleMouseLeave() {
+      // 鼠标离开视口，排斥点归位到无穷远
+      mouseX = -Infinity;
+      mouseY = -Infinity;
+    }
 
-    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    animate();
+
+    window.addEventListener("resize", debouncedResize);
     window.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
       cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", resizeCanvas);
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", debouncedResize);
       window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-[-1] pointer-events-none opacity-50 mix-blend-multiply hidden md:block"
+      aria-hidden="true"
+      className="fixed inset-0 z-[-1] pointer-events-none
+                 opacity-50 mix-blend-multiply
+                 hidden md:block"
     />
   );
 }

@@ -110,7 +110,9 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-on-background font-body-md antialiased selection:bg-primary selection:text-on-primary relative overflow-x-hidden">
         {children}
+        	
       </body>
+      
     </html>
   );
 }

@@ -23,11 +23,11 @@ export function Articles() {
     <section className="max-w-[1280px] mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32 border-t border-surface-variant" id="blog">
       <ScrollReveal className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
         <div className="max-w-2xl border-l-2 border-primary pl-6">
-          <p className="font-label-caps text-[10px] md:text-xs text-primary uppercase tracking-widest mb-3 md:mb-4">技术思考与文章</p>
-          <h2 className="font-display-lg text-3xl md:text-4xl lg:text-5xl text-on-surface tracking-tight">技术思考</h2>
+         
+          <h2 className="font-display-lg text-3xl md:text-4xl lg:text-5xl text-on-surface tracking-tight">近期博客</h2>
         </div>
         <a className="font-label-caps text-[10px] md:text-xs text-primary hover:text-surface-tint inline-flex items-center transition-colors pb-2 border-b border-primary/30 hover:border-primary uppercase tracking-widest self-start md:self-auto" href="#">
-          进入博客 <span className="material-symbols-outlined ml-2 text-[14px]">arrow_forward</span>
+          全部博客 <span className="material-symbols-outlined ml-2 text-[14px]">arrow_forward</span>
         </a>
       </ScrollReveal>
 

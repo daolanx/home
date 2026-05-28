@@ -14,7 +14,7 @@ export default function Home() {
       <main className="pt-20">
         <Hero />
         <Showcases />
-        <Skills />
+        {/* <Skills /> */}
         <Articles />
       </main>
       <Contact />
