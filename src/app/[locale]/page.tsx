@@ -6,7 +6,8 @@ import { Articles } from "@/components/articles";
 import { Contact } from "@/components/contact";
 import { ParticleCanvas } from "@/components/particle-canvas";
 
-export default function Home() {
+export default async function Home() {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   return (
     <>
       <ParticleCanvas />

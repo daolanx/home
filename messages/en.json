@@ -62,5 +62,8 @@
     "heading": "Get in Touch",
     "description": "If you have a collaboration inquiry or any questions, feel free to reach out. I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.",
     "emailCta": "Email"
+  },
+  "Loading": {
+    "text": "Loading..."
   }
 }
