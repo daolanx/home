@@ -9,38 +9,38 @@ export function Contact() {
               Interested in collaborating or have a question? Feel free to reach out. I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
             </p>
           </div>
-          <div className="flex flex-col gap-6">
+          <nav aria-label="Social links" className="flex flex-col gap-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 md:gap-y-6">
-              <a className="group flex items-center justify-between p-4 border border-surface-variant hover:border-primary transition-colors duration-300" href="#">
+              <a className="group flex items-center justify-between p-4 border border-surface-variant hover:border-primary transition-colors duration-300" href="https://github.com/daolanx" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub profile">
                 <span className="font-label-caps text-[10px] md:text-xs text-on-surface-variant group-hover:text-primary tracking-widest uppercase flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[16px] md:text-[18px]">code</span>
+                  <span className="material-symbols-outlined text-[16px] md:text-[18px]" aria-hidden="true">code</span>
                   GitHub
                 </span>
-                <span className="material-symbols-outlined text-[16px] text-surface-variant group-hover:text-primary transition-colors">arrow_outward</span>
+                <span className="material-symbols-outlined text-[16px] text-surface-variant group-hover:text-primary transition-colors" aria-hidden="true">arrow_outward</span>
               </a>
-              <a className="group flex items-center justify-between p-4 border border-surface-variant hover:border-primary transition-colors duration-300" href="#">
+              <a className="group flex items-center justify-between p-4 border border-surface-variant hover:border-primary transition-colors duration-300" href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Visit LinkedIn profile">
                 <span className="font-label-caps text-[10px] md:text-xs text-on-surface-variant group-hover:text-primary tracking-widest uppercase flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[16px] md:text-[18px]">work</span>
+                  <span className="material-symbols-outlined text-[16px] md:text-[18px]" aria-hidden="true">work</span>
                   LinkedIn
                 </span>
-                <span className="material-symbols-outlined text-[16px] text-surface-variant group-hover:text-primary transition-colors">arrow_outward</span>
+                <span className="material-symbols-outlined text-[16px] text-surface-variant group-hover:text-primary transition-colors" aria-hidden="true">arrow_outward</span>
               </a>
-              <a className="group flex items-center justify-between p-4 border border-surface-variant hover:border-primary transition-colors duration-300" href="#">
+              <a className="group flex items-center justify-between p-4 border border-surface-variant hover:border-primary transition-colors duration-300" href="https://twitter.com/daolanx" target="_blank" rel="noopener noreferrer" aria-label="Visit Twitter profile">
                 <span className="font-label-caps text-[10px] md:text-xs text-on-surface-variant group-hover:text-primary tracking-widest uppercase flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[16px] md:text-[18px]">tag</span>
+                  <span className="material-symbols-outlined text-[16px] md:text-[18px]" aria-hidden="true">tag</span>
                   Twitter
                 </span>
-                <span className="material-symbols-outlined text-[16px] text-surface-variant group-hover:text-primary transition-colors">arrow_outward</span>
+                <span className="material-symbols-outlined text-[16px] text-surface-variant group-hover:text-primary transition-colors" aria-hidden="true">arrow_outward</span>
               </a>
-              <a className="group flex items-center justify-between p-4 border border-surface-variant hover:border-primary transition-colors duration-300" href="mailto:hello@example.com">
+              <a className="group flex items-center justify-between p-4 border border-surface-variant hover:border-primary transition-colors duration-300" href="mailto:daolanx.dev@gmail.com" aria-label="Send email">
                 <span className="font-label-caps text-[10px] md:text-xs text-on-surface-variant group-hover:text-primary tracking-widest uppercase flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[16px] md:text-[18px]">mail</span>
+                  <span className="material-symbols-outlined text-[16px] md:text-[18px]" aria-hidden="true">mail</span>
                   Email
                 </span>
-                <span className="material-symbols-outlined text-[16px] text-surface-variant group-hover:text-primary transition-colors">arrow_outward</span>
+                <span className="material-symbols-outlined text-[16px] text-surface-variant group-hover:text-primary transition-colors" aria-hidden="true">arrow_outward</span>
               </a>
             </div>
-          </div>
+          </nav>
         </div>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-12 pt-8 md:pt-12 border-t border-surface-variant">
           <div className="flex flex-col gap-3 md:gap-4">
@@ -48,7 +48,7 @@ export function Contact() {
               <span className="w-2 h-2 bg-primary" />DevPortfolio
             </span>
             <span className="font-label-caps text-[8px] md:text-[10px] text-on-surface-variant tracking-widest uppercase">
-              &copy; 2024 Expert Generalist. Built with technical rigor.
+              &copy; {new Date().getFullYear()} Expert Generalist. Built with technical rigor.
             </span>
           </div>
         </div>

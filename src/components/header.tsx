@@ -59,7 +59,7 @@ export function Header() {
         </button>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-12">
+        <nav aria-label="Main navigation" className="hidden md:flex items-center gap-12">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -74,16 +74,16 @@ export function Header() {
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-4">
           <div className="flex gap-2 mr-4 border-r border-surface-variant pr-4">
-            <button className="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+            <button className="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors" aria-label="Toggle theme">
               <span className="material-symbols-outlined text-[18px]">light_mode</span>
             </button>
-            <button className="w-8 h-8 rounded-full flex items-center justify-center font-label-caps text-[10px] text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+            <button className="w-8 h-8 rounded-full flex items-center justify-center font-label-caps text-[10px] text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors" aria-label="Switch language">
               EN
             </button>
           </div>
-          <a className="inline-flex items-center justify-center px-6 py-2 border border-primary text-primary font-label-caps text-xs hover:bg-primary hover:text-on-primary transition-colors duration-200 group" href="#">
+          <a className="inline-flex items-center justify-center px-6 py-2 border border-primary text-primary font-label-caps text-xs hover:bg-primary hover:text-on-primary transition-colors duration-200 group" href="#" aria-label="Download resume">
             Resume
-            <span className="material-symbols-outlined ml-2 text-[14px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            <span className="material-symbols-outlined ml-2 text-[14px] group-hover:translate-x-1 transition-transform" aria-hidden="true">arrow_forward</span>
           </a>
         </div>
       </div>
@@ -96,7 +96,7 @@ export function Header() {
             : "-translate-y-full opacity-0 pointer-events-none"
         }`}
       >
-        <nav className="flex flex-col gap-6">
+        <nav aria-label="Mobile navigation" className="flex flex-col gap-6">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -110,14 +110,14 @@ export function Header() {
         </nav>
         <div className="flex items-center justify-between pt-6 border-t border-surface-variant">
           <div className="flex gap-4">
-            <button className="w-10 h-10 border border-surface-variant rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors">
+            <button className="w-10 h-10 border border-surface-variant rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" aria-label="Toggle theme">
               <span className="material-symbols-outlined text-[20px]">light_mode</span>
             </button>
-            <button className="w-10 h-10 border border-surface-variant rounded-full flex items-center justify-center font-label-caps text-[12px] text-on-surface hover:bg-surface-container transition-colors">
+            <button className="w-10 h-10 border border-surface-variant rounded-full flex items-center justify-center font-label-caps text-[12px] text-on-surface hover:bg-surface-container transition-colors" aria-label="Switch language">
               EN
             </button>
           </div>
-          <a className="inline-flex items-center justify-center px-6 py-2 bg-primary text-on-primary font-label-caps text-xs transition-colors duration-200" href="#">
+          <a className="inline-flex items-center justify-center px-6 py-2 bg-primary text-on-primary font-label-caps text-xs transition-colors duration-200" href="#" aria-label="Download resume">
             Resume
           </a>
         </div>

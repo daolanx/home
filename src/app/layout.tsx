@@ -3,6 +3,8 @@ import { Playfair_Display, Hanken_Grotesk, Space_Mono, Geist } from "next/font/g
 import Script from "next/script";
 import "./globals.css";
 
+const siteUrl = "https://dax.studio";
+
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
@@ -39,29 +41,51 @@ export const metadata: Metadata = {
     default: "Dax | Freelance Frontend Developer",
     template: "%s | Dax",
   },
-  description: "Freelance Frontend Developer & Indie Developer. Building exceptional web experiences with React, Next.js, and TypeScript.",
-  keywords: ["frontend developer", "freelance developer", "React", "Next.js", "TypeScript", "web developer", "Hangzhou"],
+  description: "Dax - 前端独立开发者，专注于 React、Next.js、TypeScript 等现代技术栈，构建优雅、高性能的 Web 体验。位于杭州。",
+  keywords: ["frontend developer", "freelance developer", "React", "Next.js", "TypeScript", "web developer", "Hangzhou", "前端开发者", "独立开发者"],
   authors: [{ name: "Dax" }],
   creator: "Dax",
   publisher: "Dax",
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+  },
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://dax.studio",
+    locale: "zh_CN",
+    url: siteUrl,
     title: "Dax | Freelance Frontend Developer",
-    description: "Freelance Frontend Developer & Indie Developer. Building exceptional web experiences.",
+    description: "前端独立开发者，专注于 React、Next.js、TypeScript，构建优雅高性能的 Web 体验。",
     siteName: "Dax",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Dax | Freelance Frontend Developer",
-    description: "Freelance Frontend Developer & Indie Developer.",
+    description: "前端独立开发者，专注于 React、Next.js、TypeScript，构建优雅高性能的 Web 体验。",
     creator: "@daolanx",
   },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Dax",
+  url: siteUrl,
+  jobTitle: "Freelance Frontend Developer",
+  description: "前端独立开发者，专注于 React、Next.js、TypeScript，构建优雅高性能的 Web 体验。",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Hangzhou",
+    addressCountry: "CN",
+  },
+  sameAs: [
+    "https://github.com/daolanx",
+    "https://twitter.com/daolanx",
+  ],
 };
 
 export default function RootLayout({
@@ -74,6 +98,10 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Script
           defer
           src="https://cloud.umami.is/script.js"

@@ -44,7 +44,7 @@ export function Articles() {
                 </h3>
               </div>
               <div className="shrink-0 flex items-center justify-between lg:justify-end gap-4 mt-2 lg:mt-0">
-                <time className="font-label-caps text-[10px] md:text-xs text-outline tracking-widest">{post.date}</time>
+                <time className="font-label-caps text-[10px] md:text-xs text-outline tracking-widest" dateTime={post.date}>{post.date}</time>
                 <span className="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-[20px] lg:opacity-0 lg:group-hover:opacity-100 lg:-translate-x-4 lg:group-hover:translate-x-0 duration-300">arrow_forward</span>
               </div>
             </a>
