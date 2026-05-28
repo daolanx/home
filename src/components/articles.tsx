@@ -1,23 +1,33 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const POST_KEYS = ["ddd", "rendering", "tailwind"] as const;
 
+const RAW_DATES: Record<string, string> = {
+  ddd: "2023-11-24",
+  rendering: "2023-10-12",
+  tailwind: "2023-09-05",
+};
+
+function formatDate(dateStr: string, locale: string): string {
+  const date = new Date(dateStr);
+  if (locale === "zh") {
+    return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "long", day: "numeric" }).format(date);
+  }
+  return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+}
+
 export async function Articles() {
   const t = await getTranslations("Articles");
+  const locale = await getLocale();
 
   const posts = POST_KEYS.map((key) => ({
     key,
     category: t(`posts.${key}.category`),
     title: t(`posts.${key}.title`),
-    date: "2023-11-24",
+    date: RAW_DATES[key],
+    formattedDate: formatDate(RAW_DATES[key], locale),
   }));
-
-  const dates: Record<string, string> = {
-    ddd: "2023-11-24",
-    rendering: "2023-10-12",
-    tailwind: "2023-09-05",
-  };
 
   return (
     <section className="max-w-[1280px] mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32 border-t border-surface-variant" id="blog">
@@ -43,7 +53,7 @@ export async function Articles() {
                 </h3>
               </div>
               <div className="shrink-0 flex items-center justify-between lg:justify-end gap-4 mt-2 lg:mt-0">
-                <time className="font-label-caps text-[10px] md:text-xs text-outline tracking-widest" dateTime={dates[post.key]}>{dates[post.key]}</time>
+                <time className="font-label-caps text-[10px] md:text-xs text-outline tracking-widest" dateTime={post.date}>{post.formattedDate}</time>
                 <span className="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-[20px] lg:opacity-0 lg:group-hover:opacity-100 lg:-translate-x-4 lg:group-hover:translate-x-0 duration-300">arrow_forward</span>
               </div>
             </a>
