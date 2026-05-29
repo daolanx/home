@@ -1,8 +1,11 @@
 // components/portfolios.tsx
 import { getTranslations, getLocale } from "next-intl/server";
-import { ScrollReveal } from "@/components/scroll-reveal";
-import { ExternalLink, GitBranch } from "lucide-react";
-import { getPortfolios, type Portfolio } from "@/lib/api";
+import Link from "next/link";
+import { FadeIn } from "@/components/ui/fade-in";
+import { getPortfolios } from "@/adapter/portfolios";
+import type { Portfolio } from "@/adapter/types";
+import { PORTFOLIOS_SERVICE } from "@/adapter/constants";
+
 
 /* ── Config ── */
 const DELAY = { HEADER: 0, FIRST: 100, SECOND: 200, BOTTOM_BASE: 300, BOTTOM_STEP: 100 } as const;
@@ -11,7 +14,7 @@ const DELAY = { HEADER: 0, FIRST: 100, SECOND: 200, BOTTOM_BASE: 300, BOTTOM_STE
 export async function Portfolios() {
   const t = await getTranslations("Showcases");
   const locale = await getLocale();
-  const portfolios = await getPortfolios(locale);
+  const { data: portfolios } = await getPortfolios(locale);
 
   // Only take the first 4 projects
   const projects = portfolios.slice(0, 4);
@@ -25,7 +28,7 @@ export async function Portfolios() {
                  px-6 md:px-12 lg:px-24
                  py-16 md:py-24 lg:py-32"
     >
-      <ScrollReveal
+      <FadeIn
         delay={DELAY.HEADER}
         className="flex flex-col md:flex-row md:items-end justify-between
                    mb-16 md:mb-24 gap-6"
@@ -35,8 +38,9 @@ export async function Portfolios() {
             {t("sectionTitle")}
           </h2>
         </div>
-        <a
-          href="#"
+        <Link
+          target="_blank"
+          href={PORTFOLIOS_SERVICE.origin}
           className="font-label-caps text-[10px] md:text-xs
                      text-on-surface-variant hover:text-primary
                      inline-flex items-center transition-colors
@@ -46,27 +50,27 @@ export async function Portfolios() {
         >
           {t("viewAll")}
           <span className="material-symbols-outlined ml-2 text-[14px]">arrow_forward</span>
-        </a>
-      </ScrollReveal>
+        </Link>
+      </FadeIn>
 
       <div className="space-y-16 md:space-y-24 lg:space-y-32">
         {first && (
-          <ScrollReveal delay={DELAY.FIRST}>
+          <FadeIn delay={DELAY.FIRST}>
             <ProjectRow project={first} reverse={false} t={t} />
-          </ScrollReveal>
+          </FadeIn>
         )}
 
         {second && (
-          <ScrollReveal delay={DELAY.SECOND}>
+          <FadeIn delay={DELAY.SECOND}>
             <ProjectRow project={second} reverse={true} t={t} />
-          </ScrollReveal>
+          </FadeIn>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {rest.map((project, i) => (
-            <ScrollReveal key={project.id} delay={DELAY.BOTTOM_BASE + i * DELAY.BOTTOM_STEP}>
+            <FadeIn key={project.id} delay={DELAY.BOTTOM_BASE + i * DELAY.BOTTOM_STEP}>
               <ProjectCard project={project} t={t} />
-            </ScrollReveal>
+            </FadeIn>
           ))}
         </div>
       </div>
@@ -182,7 +186,7 @@ function TagsRow({
 function CaseLink({ webUrl, sourceUrl, liveDemoLabel, viewSourceLabel }: { webUrl: string; sourceUrl: string; liveDemoLabel: string; viewSourceLabel: string }) {
   return (
     <div className="flex items-center gap-6">
-      <a
+      <Link
         href={webUrl}
         target="_blank"
         rel="noopener noreferrer"
@@ -196,8 +200,8 @@ function CaseLink({ webUrl, sourceUrl, liveDemoLabel, viewSourceLabel }: { webUr
       >
         {liveDemoLabel}
 
-      </a>
-      <a
+      </Link>
+      <Link
         href={sourceUrl}
         target="_blank"
         rel="noopener noreferrer"
@@ -211,7 +215,7 @@ function CaseLink({ webUrl, sourceUrl, liveDemoLabel, viewSourceLabel }: { webUr
       >
         {viewSourceLabel}
 
-      </a>
+      </Link>
     </div>
   );
 }

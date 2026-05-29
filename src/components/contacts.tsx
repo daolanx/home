@@ -1,8 +1,7 @@
 // components/contact.tsx
 import { getTranslations } from "next-intl/server";
-import { ScrollReveal } from "@/components/scroll-reveal";
-
-const DELAY = { HEADING: 0, BODY: 100, LINKS: 200, FOOTER: 300 } as const;
+import { FadeIn } from "@/components/ui/fade-in";
+import Link from 'next/link';
 
 export async function Contact() {
   const t = await getTranslations("Contact");
@@ -10,56 +9,25 @@ export async function Contact() {
   return (
     <footer
       id="contact"
-      className="w-full border-t border-surface-variant bg-surface-container-lowest"
+      className="w-full border-t border-surface-variant "
     >
       <div className="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-16 md:mb-24">
           <div className="flex flex-col gap-4 md:gap-6">
-            <ScrollReveal delay={DELAY.HEADING}>
+            <FadeIn delay={0}>
               <h2 className="font-display-lg text-4xl md:text-5xl lg:text-6xl text-on-surface tracking-tight mb-2 md:mb-4">
                 {t("heading")}
               </h2>
-            </ScrollReveal>
+            </FadeIn>
 
-            <ScrollReveal delay={DELAY.BODY}>
+            <FadeIn delay={100}>
               <p className="font-body-lg text-sm md:text-base text-on-surface-variant max-w-md leading-relaxed md:mb-6">
                 {t("description")}
               </p>
-            </ScrollReveal>
+            </FadeIn>
             <SocialLink {...{ icon: "mail", label: t("emailCta"), href: "mailto:daolanx.dev@gmail.com", isExternal: false }} />
           </div>
         </div>
-
-        <ScrollReveal delay={DELAY.FOOTER}>
-          <div
-            className="flex flex-col md:flex-row justify-between items-start md:items-center
-                       gap-8 md:gap-12 pt-8 md:pt-12 border-t border-surface-variant"
-          >
-            <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
-              <span className="font-body-lg text-sm md:text-base text-on-surface-variant pr-4">Dax © 2026</span>
-              <nav aria-label="Footer Links" className="flex gap-x-4">
-                {[
-                  { href: "https://x.com/daolanx", label: "Twitter" },
-                  { href: "https://github.com/daolanx", label: "GitHub" },
-                  { href: "https://daolanx.me", label: "Blog" },
-                  { href: "https://demo.daolanx.com", label: "Work" },
-                  { href: "mailto:daolanx.dev@gmail.com", label: "Email" },
-                ].map((item) => (
-                  <a
-                    className="transition-colors hover:text-primary"
-                    href={item.href}
-                    key={item.label}
-                    {...(item.href.startsWith("http")
-                      ? { rel: "noopener noreferrer", target: "_blank" }
-                      : {})}
-                  >
-                    {item.label}
-                  </a>
-                ))}
-              </nav>
-            </div>
-          </div>
-        </ScrollReveal>
       </div>
     </footer>
   );
@@ -77,7 +45,7 @@ function SocialLink({
   isExternal: boolean;
 }) {
   return (
-    <a
+    <Link
       href={href}
       {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       aria-label={`Visit ${label}${isExternal ? " profile" : ""}`}
@@ -99,6 +67,6 @@ function SocialLink({
       >
         arrow_outward
       </span>
-    </a>
+    </Link>
   );
 }
