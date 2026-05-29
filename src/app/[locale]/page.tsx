@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import { Header } from "@/components/header";
+import { Header } from "@/components/layouts/header";
 import { Hero } from "@/components/hero";
-import { Showcases } from "@/components/showcases";
-import { Skills } from "@/components/skills";
+import { Portfolios, PortfoliosSkeleton } from "@/components/portfolios";
 import { Articles, ArticlesSkeleton } from "@/components/articles";
-import { Contact } from "@/components/contact";
-import { ParticleCanvas } from "@/components/particle-canvas";
+import { Contact } from "@/components/contacts";
+import { ParticleCanvas } from "@/components/ui/particle-canvas";
+import { Footer } from "@/components/layouts/footer";
 
 export default async function Home() {
   return (
@@ -14,13 +14,15 @@ export default async function Home() {
       <Header />
       <main className="pt-20">
         <Hero />
-        <Showcases />
-        {/* <Skills /> */}
+        <Suspense fallback={<PortfoliosSkeleton />}>
+          <Portfolios />
+        </Suspense>
         <Suspense fallback={<ArticlesSkeleton />}>
           <Articles />
         </Suspense>
+        <Contact />
       </main>
-      <Contact />
+      <Footer />
     </>
   );
 }

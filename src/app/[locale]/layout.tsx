@@ -1,11 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Hanken_Grotesk, Space_Mono, Geist } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import Script from "next/script";
+import { getMeta, SITE_ORIGIN, SOCIAL_LINKS, UMAMI_WEBSITE_ID } from '@/constants';
 import "../globals.css";
 
-const siteUrl = "https://dax.studio";
+
+
+// ── Fonts ────────────────────────────────────────────────────────────────────
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -32,11 +35,25 @@ const geist = Geist({
   display: "swap",
 });
 
-export const viewport = {
+const fontClass = [
+  playfairDisplay.variable,
+  hankenGrotesk.variable,
+  spaceMono.variable,
+  geist.variable,
+].join(" ");
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+
+// ── Viewport ─────────────────────────────────────────────────────────────────
+
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-} as const;
+};
+
+// ── Metadata ─────────────────────────────────────────────────────────────────
 
 export async function generateMetadata({
   params,
@@ -44,49 +61,36 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const isZh = locale === "zh";
+  const m = getMeta(locale);
+
   return {
-    title: {
-      default: isZh ? "Dax | 前端独立开发者" : "Dax | Freelance Frontend Developer",
-      template: isZh ? "%s | Dax" : "%s | Dax",
-    },
-    description: isZh
-      ? "前端独立开发者，专注于 React、Next.js、TypeScript 等现代技术栈，构建优雅、高性能的 Web 体验。位于杭州。"
-      : "Freelance frontend developer specializing in React, Next.js, TypeScript, building elegant and high-performance web experiences. Based in Hangzhou.",
-    keywords: isZh
-      ? ["前端开发者", "独立开发者", "React", "Next.js", "TypeScript", "杭州"]
-      : ["frontend developer", "freelance developer", "React", "Next.js", "TypeScript", "Hangzhou"],
+    title: { default: m.title, template: "%s | Dax" },
+    description: m.description,
+    keywords: [...m.keywords],
     authors: [{ name: "Dax" }],
     creator: "Dax",
     publisher: "Dax",
-    metadataBase: new URL(siteUrl),
-    alternates: {
-      canonical: "/",
-    },
-    robots: {
-      index: true,
-      follow: true,
-    },
+    metadataBase: new URL(SITE_ORIGIN),
+    alternates: { canonical: "/" },
+    robots: { index: true, follow: true },
     openGraph: {
       type: "website",
-      locale: isZh ? "zh_CN" : "en_US",
-      url: siteUrl,
-      title: isZh ? "Dax | 前端独立开发者" : "Dax | Freelance Frontend Developer",
-      description: isZh
-        ? "前端独立开发者，专注于 React、Next.js、TypeScript，构建优雅高性能的 Web 体验。"
-        : "Freelance frontend developer specializing in React, Next.js, TypeScript, building elegant high-performance web experiences.",
+      locale: m.locale,
+      url: SITE_ORIGIN,
+      title: m.title,
+      description: m.shortDescription,
       siteName: "Dax",
     },
     twitter: {
       card: "summary_large_image",
-      title: isZh ? "Dax | 前端独立开发者" : "Dax | Freelance Frontend Developer",
-      description: isZh
-        ? "前端独立开发者，专注于 React、Next.js、TypeScript，构建优雅高性能的 Web 体验。"
-        : "Freelance frontend developer specializing in React, Next.js, TypeScript, building elegant high-performance web experiences.",
+      title: m.title,
+      description: m.shortDescription,
       creator: "@daolanx",
     },
   };
 }
+
+// ── Layout ───────────────────────────────────────────────────────────────────
 
 export default async function LocaleLayout({
   children,
@@ -97,47 +101,46 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   const messages = await getMessages();
-  const isZh = locale === "zh";
+  const m = getMeta(locale);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Dax",
-    url: siteUrl,
-    jobTitle: isZh ? "前端独立开发者" : "Freelance Frontend Developer",
-    description: isZh
-      ? "前端独立开发者，专注于 React、Next.js、TypeScript，构建优雅高性能的 Web 体验。"
-      : "Freelance frontend developer specializing in React, Next.js, TypeScript, building elegant high-performance web experiences.",
+    url: SITE_ORIGIN,
+    jobTitle: m.jobTitle,
+    description: m.shortDescription,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Hangzhou",
       addressCountry: "CN",
     },
-    sameAs: [
-      "https://github.com/daolanx",
-      "https://twitter.com/daolanx",
-    ],
+    sameAs: Object.values(SOCIAL_LINKS).map((link) => link.href),
   };
 
   return (
-    <html lang={locale} className={`${playfairDisplay.variable} ${hankenGrotesk.variable} ${spaceMono.variable} ${geist.variable}`}>
+    <html lang={locale} className={fontClass}>
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="icon" href="/favicon.png" type="image/png+xml" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <Script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="2008e087-18a7-43de-8901-4f580e9ddabc"
         />
       </head>
       <body className="bg-background text-on-background font-body-md antialiased selection:bg-primary selection:text-on-primary relative overflow-x-hidden">
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
+        <Script
+          strategy="afterInteractive"
+          src="https://cloud.umami.is/script.js"
+          data-website-id={UMAMI_WEBSITE_ID}
+        />
       </body>
     </html>
   );
