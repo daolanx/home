@@ -42,21 +42,7 @@
   },
   "Articles": {
     "sectionTitle": "Latest Blog",
-    "viewAll": "All Posts",
-    "posts": {
-      "ddd": {
-        "category": "Architecture",
-        "title": "Practical Guide to Domain-Driven Design in Large React Applications"
-      },
-      "rendering": {
-        "category": "Performance",
-        "title": "Understanding Modern Browser Rendering Pipeline: From CSSOM to Paint"
-      },
-      "tailwind": {
-        "category": "Design Systems",
-        "title": "Building Maintainable Internal Component Libraries with Tailwind CSS"
-      }
-    }
+    "viewAll": "All Posts"
   },
   "Contact": {
     "heading": "Get in Touch",

@@ -42,21 +42,7 @@
   },
   "Articles": {
     "sectionTitle": "近期博客",
-    "viewAll": "全部博客",
-    "posts": {
-      "ddd": {
-        "category": "架构",
-        "title": "在大型 React 应用中实施领域驱动设计 (DDD) 的实践经验"
-      },
-      "rendering": {
-        "category": "性能",
-        "title": "彻底理解现代浏览器渲染流水线：从 CSSOM 到 Paint"
-      },
-      "tailwind": {
-        "category": "设计系统",
-        "title": "基于 Tailwind CSS 构建高可维护的内部组件库指南"
-      }
-    }
+    "viewAll": "全部博客"
   },
   "Contact": {
     "heading": "联系我",
