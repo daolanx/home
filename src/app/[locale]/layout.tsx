@@ -122,7 +122,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${playfairDisplay.variable} ${hankenGrotesk.variable} ${spaceMono.variable} ${geist.variable}`}>
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.png" type="image/png+xml" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"

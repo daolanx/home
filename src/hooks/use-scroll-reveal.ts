@@ -19,7 +19,7 @@ export function useScrollReveal<T extends HTMLElement>(
     const el = ref.current;
     if (!el) return;
 
-    // 首帧即设为不可见，避免布局闪烁
+    // Set invisible on first frame to avoid layout flash
     el.style.willChange = "opacity, transform";
 
     const observer = new IntersectionObserver(

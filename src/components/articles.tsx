@@ -21,7 +21,8 @@ export async function Articles() {
   const locale = await getLocale();
 
   const res = await fetch(`https://daolanx.me/api/posts/${locale}.json`);
-  const posts: Post[] = (await res.json()).slice(0, 5);
+  const data = await res.json() as Post[];
+  const posts = data.slice(0, 5);
 
   return (
     <section className="max-w-[1280px] mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32 border-t border-surface-variant" id="blog">

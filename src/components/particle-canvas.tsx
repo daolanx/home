@@ -2,29 +2,29 @@
 
 import { useEffect, useRef } from "react";
 
-/* ── 配置 ── */
+/* ── Config ── */
 const CONFIG = {
-  DENSITY: 10000,            // 每个粒子占的像素面积
-  MAX: 100,                  // 粒子上限
+  DENSITY: 10000,            // Pixel area per particle
+  MAX: 100,                  // Maximum particle count
   SIZE_MIN: 0.5,
   SIZE_RANGE: 1.5,
   SPEED: 0.5,
   OPACITY_MIN: 0.1,
   OPACITY_RANGE: 0.3,
 
-  MOUSE_RADIUS: 150,         // 鼠标排斥半径
+  MOUSE_RADIUS: 150,         // Mouse repulsion radius
   MOUSE_STRENGTH: 0.01,
 
-  LINK_DIST: 100,            // 连线最大距离
-  LINK_OPACITY: 0.1,         // 连线最大透明度
+  LINK_DIST: 100,            // Maximum line distance
+  LINK_OPACITY: 0.1,         // Maximum line opacity
   LINK_WIDTH: 0.5,
 } as const;
 
-// 预计算平方值，热循环中避免 sqrt
+// Pre-calculate squared values to avoid sqrt in hot loop
 const MOUSE_RADIUS_SQ = CONFIG.MOUSE_RADIUS ** 2;
 const LINK_DIST_SQ = CONFIG.LINK_DIST ** 2;
 
-/* ── 粒子结构（纯数据，无原型链开销） ── */
+/* ── Particle struct (pure data, no prototype chain overhead) ── */
 interface Particle {
   x: number;
   y: number;
@@ -50,7 +50,7 @@ function initParticles(w: number, h: number): Particle[] {
   return Array.from({ length: count }, () => createParticle(w, h));
 }
 
-/* ── 组件 ── */
+/* ── Component ── */
 export function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -61,7 +61,7 @@ export function ParticleCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // 无障碍：减少动态偏好
+    // Accessibility: respect reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const dpr = window.devicePixelRatio || 1;
@@ -71,7 +71,7 @@ export function ParticleCanvas() {
     let animationId: number;
     let resizeTimer: ReturnType<typeof setTimeout>;
 
-    /* ── canvas 尺寸 + 高 DPI ── */
+    /* ── Canvas size + high DPI ── */
     function resizeCanvas() {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -88,7 +88,7 @@ export function ParticleCanvas() {
       resizeTimer = setTimeout(resizeCanvas, 150);
     }
 
-    /* ── 动画循环 ── */
+    /* ── Animation loop ── */
     function animate() {
       const w = window.innerWidth;
       const h = window.innerHeight;
@@ -96,7 +96,7 @@ export function ParticleCanvas() {
 
       ctx!.clearRect(0, 0, w, h);
 
-      // ── 连线 ──
+      // ── Draw lines ──
       ctx!.lineWidth = CONFIG.LINK_WIDTH;
       for (let i = 0; i < len; i++) {
         const a = particles[i];
@@ -117,21 +117,21 @@ export function ParticleCanvas() {
         }
       }
 
-      // ── 粒子更新 & 绘制 ──
+      // ── Update & draw particles ──
       for (let i = 0; i < len; i++) {
         const p = particles[i];
 
-        // 移动
+        // Move particle
         p.x += p.vx;
         p.y += p.vy;
 
-        // 边缘环绕
+        // Wrap around edges
         if (p.x < 0) p.x += w;
         else if (p.x > w) p.x -= w;
         if (p.y < 0) p.y += h;
         else if (p.y > h) p.y -= h;
 
-        // 鼠标排斥（平方距离比较，无 sqrt）
+        // Mouse repulsion (squared distance comparison, no sqrt)
         const mdx = mouseX - p.x;
         const mdy = mouseY - p.y;
         if (mdx * mdx + mdy * mdy < MOUSE_RADIUS_SQ) {
@@ -139,7 +139,7 @@ export function ParticleCanvas() {
           p.y -= mdy * CONFIG.MOUSE_STRENGTH;
         }
 
-        // 绘制
+        // Draw particle
         ctx!.fillStyle = `rgba(0,0,0,${p.opacity})`;
         ctx!.beginPath();
         ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -149,14 +149,14 @@ export function ParticleCanvas() {
       animationId = requestAnimationFrame(animate);
     }
 
-    /* ── 事件 ── */
+    /* ── Events ── */
     function handleMouseMove(e: MouseEvent) {
       mouseX = e.clientX;
       mouseY = e.clientY;
     }
 
     function handleMouseLeave() {
-      // 鼠标离开视口，排斥点归位到无穷远
+      // Mouse left viewport, reset repulsion point to infinity
       mouseX = -Infinity;
       mouseY = -Infinity;
     }

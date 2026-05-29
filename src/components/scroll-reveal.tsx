@@ -21,7 +21,7 @@ export function ScrollReveal({
 }: ScrollRevealProps) {
   const ref = useScrollReveal<HTMLDivElement>({ threshold, rootMargin });
 
-  // 将 delay 直接作为内联样式，避免 useEffect 设置导致的首帧闪烁
+  // Use inline style for delay to avoid first-frame flash from useEffect
   const style: CSSProperties = delay > 0 ? { transitionDelay: `${delay}ms` } : {};
 
   return (
