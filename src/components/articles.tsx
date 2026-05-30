@@ -1,6 +1,7 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import { FadeIn } from "@/components/ui/fade-in";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { formatDate } from "@/lib/time";
 import { getArticles } from "@/adapter/articles";
 import { ARTICLES_SERVICE } from "@/adapter/constants";
@@ -17,7 +18,7 @@ export async function Articles() {
           <h2 className="font-display-lg text-3xl md:text-4xl lg:text-5xl text-on-surface tracking-tight">{t("sectionTitle")}</h2>
         </div>
         <Link className="font-label-caps text-[10px] md:text-xs text-on-surface-variant hover:text-primary inline-flex items-center transition-colors pb-2 border-b border-on-surface-variant/30 hover:border-primary uppercase tracking-widest self-start md:self-auto" href={`${ARTICLES_SERVICE.origin}/${locale}/`} target="_blank" rel="noopener noreferrer">
-          {t("viewAll")} <span className="material-symbols-outlined ml-2 text-[14px]">arrow_forward</span>
+          {t("viewAll")} <ArrowRight size={14} className="ml-2" />
         </Link>
       </FadeIn>
 
@@ -35,7 +36,7 @@ export async function Articles() {
               </div>
               <div className="shrink-0 flex items-center justify-between lg:justify-end gap-4 mt-2 lg:mt-0">
                 <time className="font-label-caps text-[10px] md:text-xs text-outline tracking-widest" dateTime={post.date}>{formatDate(post.date, locale)}</time>
-                <span className="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-[20px] lg:opacity-0 lg:group-hover:opacity-100 lg:-translate-x-4 lg:group-hover:translate-x-0 duration-300">arrow_forward</span>
+                <ArrowRight size={20} className="text-outline group-hover:text-primary transition-colors lg:opacity-0 lg:group-hover:opacity-100 lg:-translate-x-4 lg:group-hover:translate-x-0 duration-300" />
               </div>
             </Link>
           </FadeIn>

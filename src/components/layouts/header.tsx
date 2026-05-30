@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Home } from "lucide-react";
+import { Home, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { LocaleSwitch } from "@/components/ui/locale-switch";
 import Link from "next/link";
@@ -46,9 +46,7 @@ export function Header() {
             className="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors cursor-pointer"
             aria-label="Toggle theme"
           >
-            <span className="material-symbols-outlined text-[18px]">
-              {mounted && theme === "dark" ? "dark_mode" : "light_mode"}
-            </span>
+            {mounted && theme === "dark" ? <Moon size={18} /> : <Sun size={18} />}
           </button>
           <LocaleSwitch />
         </div>

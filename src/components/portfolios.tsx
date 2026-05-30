@@ -3,6 +3,7 @@ import { getTranslations, getLocale } from "next-intl/server";
 import Link from "next/link";
 import Image from "next/image";
 import { FadeIn } from "@/components/ui/fade-in";
+import { ArrowRight } from "lucide-react";
 import { getPortfolios } from "@/adapter/portfolios";
 import type { Portfolio } from "@/adapter/types";
 import { PORTFOLIOS_SERVICE } from "@/adapter/constants";
@@ -50,13 +51,15 @@ export async function Portfolios() {
                      uppercase tracking-widest"
         >
           {t("viewAll")}
-          <span className="material-symbols-outlined ml-2 text-[14px]">arrow_forward</span>
+          <ArrowRight size={14} className="ml-2" />
         </Link>
       </FadeIn>
 
       <div className="space-y-16 md:space-y-24 lg:space-y-32">
         {first && (
-          <ProjectRow project={first} reverse={false} t={t} />
+          <FadeIn delay={DELAY.FIRST}>
+            <ProjectRow project={first} reverse={false} t={t} />
+          </FadeIn>
         )}
 
         {second && (
