@@ -124,7 +124,7 @@ function ProjectRow({
             {project.description}
           </p>
           <TagsRow tags={project.keywords} variant="separator" />
-          <CaseLink webUrl={project.webUrl} sourceUrl={project.sourceUrl} liveDemoLabel={t("liveDemo")} viewSourceLabel={t("viewSource")} />
+          <CaseLink webUrl={project.webUrl} sourceUrl={project.sourceUrl} title={project.title} liveDemoLabel={t("liveDemo")} viewSourceLabel={t("viewSource")} />
         </div>
       </div>
     </article>
@@ -156,7 +156,7 @@ function ProjectCard({ project, t }: { project: Portfolio; t: (key: string) => s
         {project.description}
       </p>
       <TagsRow tags={project.keywords} variant="separator" />
-      <CaseLink webUrl={project.webUrl} sourceUrl={project.sourceUrl} liveDemoLabel={t("liveDemo")} viewSourceLabel={t("viewSource")} />
+      <CaseLink webUrl={project.webUrl} sourceUrl={project.sourceUrl} title={project.title} liveDemoLabel={t("liveDemo")} viewSourceLabel={t("viewSource")} />
     </article>
   );
 }
@@ -192,13 +192,14 @@ function TagsRow({
   );
 }
 
-function CaseLink({ webUrl, sourceUrl, liveDemoLabel, viewSourceLabel }: { webUrl: string; sourceUrl: string; liveDemoLabel: string; viewSourceLabel: string }) {
+function CaseLink({ webUrl, sourceUrl, title, liveDemoLabel, viewSourceLabel }: { webUrl: string; sourceUrl: string; title: string; liveDemoLabel: string; viewSourceLabel: string }) {
   return (
     <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-6 mt-4 md:mt-0">
       <Link
         href={webUrl}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label={`${liveDemoLabel} - ${title}`}
         className="group/link inline-flex items-center justify-center gap-2
                    font-label-caps text-[10px] md:text-xs tracking-widest uppercase
                    border border-on-surface
@@ -213,6 +214,7 @@ function CaseLink({ webUrl, sourceUrl, liveDemoLabel, viewSourceLabel }: { webUr
         href={sourceUrl}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label={`${viewSourceLabel} - ${title}`}
         className="group/link inline-flex items-center justify-center gap-2
                    font-label-caps text-[10px] md:text-xs tracking-widest uppercase
                    border border-on-surface

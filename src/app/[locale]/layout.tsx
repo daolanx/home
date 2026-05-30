@@ -44,7 +44,6 @@ const fontClass = [
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
 };
 
 // ── Metadata ─────────────────────────────────────────────────────────────────

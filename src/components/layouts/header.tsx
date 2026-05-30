@@ -35,6 +35,7 @@ export function Header() {
       <div className="flex justify-between items-center  mx-auto px-6  h-16 sm:h-20 ">
         <Link
           href="/"
+          aria-label="Dax - Home"
           className="font-display-lg text-xl md:text-2xl font-bold text-on-surface tracking-tight flex items-center gap-2"
         >
          <Home size={20} />
