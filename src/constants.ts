@@ -35,8 +35,8 @@ export function getMeta(locale: string) {
 }
 
 export const SOCIAL_LINKS = {
-  twitter: { label: "Twitter",  icon: "tag",  href: "https://x.com/daolanx", external: true },
-  github: { label: "GitHub", icon: "code", href: "https://github.com/daolanx", external: true  },
+  twitter: { label: "Twitter",  icon: "twitter",  href: "https://x.com/daolanx", external: true },
+  github: { label: "GitHub", icon: "github", href: "https://github.com/daolanx", external: true  },
   blog: { label: "Blog",  href: "https://daolanx.me", external: true  },
   work: { label: "Work", href: "https://demo.daolanx.com", external: true  },
   email: { label: "Email", icon: "mail", href: "mailto:daolanx.dev@gmail.com", external: false },

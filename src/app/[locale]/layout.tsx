@@ -6,33 +6,31 @@ import Script from "next/script";
 import { getMeta, SITE_ORIGIN, SOCIAL_LINKS, UMAMI_WEBSITE_ID } from '@/constants';
 import "../globals.css";
 
-
-
 // ── Fonts ────────────────────────────────────────────────────────────────────
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
-  display: "swap",
+  display: "optional",
 });
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
   variable: "--font-hanken",
-  display: "swap",
+  display: "optional",
 });
 
 const spaceMono = Space_Mono({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: "400",
   variable: "--font-space-mono",
-  display: "swap",
-});
+  display: "optional",
+ });
 
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
-  display: "swap",
+  display: "optional",
 });
 
 const fontClass = [
@@ -42,11 +40,7 @@ const fontClass = [
   geist.variable,
 ].join(" ");
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-
 // ── Viewport ─────────────────────────────────────────────────────────────────
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -54,7 +48,6 @@ export const viewport: Viewport = {
 };
 
 // ── Metadata ─────────────────────────────────────────────────────────────────
-
 export async function generateMetadata({
   params,
 }: {
@@ -73,6 +66,9 @@ export async function generateMetadata({
     metadataBase: new URL(SITE_ORIGIN),
     alternates: { canonical: "/" },
     robots: { index: true, follow: true },
+    icons: {
+      icon: "/favicon.png", 
+    },
     openGraph: {
       type: "website",
       locale: m.locale,
@@ -91,7 +87,6 @@ export async function generateMetadata({
 }
 
 // ── Layout ───────────────────────────────────────────────────────────────────
-
 export default async function LocaleLayout({
   children,
   params,
@@ -112,8 +107,8 @@ export default async function LocaleLayout({
     description: m.shortDescription,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Hangzhou",
-      addressCountry: "CN",
+      addressLocality: "Singapore", 
+      addressCountry: "SG",
     },
     sameAs: Object.values(SOCIAL_LINKS).map((link) => link.href),
   };
@@ -121,12 +116,9 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={fontClass}>
       <head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="icon" href="/favicon.png" type="image/png+xml" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        />
+      
+        <link rel="preconnect" href="https://cloud.umami.is" crossOrigin="anonymous" />
+        
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -136,8 +128,10 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
+        
+       
         <Script
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           src="https://cloud.umami.is/script.js"
           data-website-id={UMAMI_WEBSITE_ID}
         />

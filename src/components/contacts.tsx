@@ -2,6 +2,7 @@
 import { getTranslations } from "next-intl/server";
 import { FadeIn } from "@/components/ui/fade-in";
 import Link from 'next/link';
+import { Mail, ExternalLink } from "lucide-react";
 
 export async function Contact() {
   const t = await getTranslations("Contact");
@@ -34,12 +35,10 @@ export async function Contact() {
 }
 
 function SocialLink({
-  icon,
   label,
   href,
   isExternal,
 }: {
-  icon: string;
   label: string;
   href: string;
   isExternal: boolean;
@@ -55,18 +54,9 @@ function SocialLink({
                  transition-colors duration-300
                  hover:bg-primary hover:text-on-primary hover:border-primary"
     >
-      <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
-        {icon}
-      </span>
+      <Mail size={18} aria-hidden="true" />
       {label}
-      <span
-        className="material-symbols-outlined text-[16px] opacity-50
-                   group-hover:opacity-100 group-hover:translate-x-0.5
-                   transition-all duration-300"
-        aria-hidden="true"
-      >
-        arrow_outward
-      </span>
+     
     </Link>
   );
 }

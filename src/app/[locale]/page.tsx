@@ -4,13 +4,12 @@ import { Hero } from "@/components/hero";
 import { Portfolios, PortfoliosSkeleton } from "@/components/portfolios";
 import { Articles, ArticlesSkeleton } from "@/components/articles";
 import { Contact } from "@/components/contacts";
-import { ParticleCanvas } from "@/components/ui/particle-canvas";
+import { ParticleCanvasWrapper } from "@/components/ui/particle-canvas-wrapper";
 import { Footer } from "@/components/layouts/footer";
 
 export default async function Home() {
   return (
     <>
-      <ParticleCanvas />
       <Header />
       <main className="pt-20">
         <Hero />
@@ -23,6 +22,7 @@ export default async function Home() {
         <Contact />
       </main>
       <Footer />
+      <ParticleCanvasWrapper />
     </>
   );
 }
