@@ -1,3 +1,3 @@
 export function isDesktop(): boolean {
-  return window.innerWidth >= 768;
+  return window.matchMedia("(min-width: 768px)").matches;
 }

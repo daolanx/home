@@ -11,26 +11,26 @@ import "../globals.css";
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
-  display: "optional",
+  display: "swap",
 });
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
   variable: "--font-hanken",
-  display: "optional",
+  display: "swap",
 });
 
 const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-space-mono",
-  display: "optional",
+  display: "swap",
  });
 
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
-  display: "optional",
+  display: "swap",
 });
 
 const fontClass = [
@@ -44,7 +44,6 @@ const fontClass = [
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
 };
 
 // ── Metadata ─────────────────────────────────────────────────────────────────
@@ -64,7 +63,13 @@ export async function generateMetadata({
     creator: "Dax",
     publisher: "Dax",
     metadataBase: new URL(SITE_ORIGIN),
-    alternates: { canonical: "/" },
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        en: "/en",
+        zh: "/zh",
+      },
+    },
     robots: { index: true, follow: true },
     icons: {
       icon: "/favicon.png", 
