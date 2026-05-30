@@ -11,26 +11,26 @@ import "../globals.css";
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
-  display: "optional",
+  display: "swap",
 });
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
   variable: "--font-hanken",
-  display: "optional",
+  display: "swap",
 });
 
 const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-space-mono",
-  display: "optional",
+  display: "swap",
  });
 
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
-  display: "optional",
+  display: "swap",
 });
 
 const fontClass = [
