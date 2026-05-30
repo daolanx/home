@@ -68,17 +68,19 @@ export function ParticleCanvas() {
     let mouseY = -Infinity;
     let animationId: number;
     let resizeTimer: ReturnType<typeof setTimeout>;
+    let canvasW = 0;
+    let canvasH = 0;
 
     /* ── Canvas size + high DPI ── */
     function resizeCanvas() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      canvas!.width = w * dpr;
-      canvas!.height = h * dpr;
-      canvas!.style.width = `${w}px`;
-      canvas!.style.height = `${h}px`;
+      canvasW = window.innerWidth;
+      canvasH = window.innerHeight;
+      canvas!.width = canvasW * dpr;
+      canvas!.height = canvasH * dpr;
+      canvas!.style.width = `${canvasW}px`;
+      canvas!.style.height = `${canvasH}px`;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      particles = initParticles(w, h);
+      particles = initParticles(canvasW, canvasH);
     }
 
     function debouncedResize() {
@@ -88,11 +90,9 @@ export function ParticleCanvas() {
 
     /* ── Animation loop ── */
     function animate() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
       const len = particles.length;
 
-      ctx!.clearRect(0, 0, w, h);
+      ctx!.clearRect(0, 0, canvasW, canvasH);
 
       // Draw connection lines
       ctx!.lineWidth = CONFIG.LINK_WIDTH;
@@ -118,8 +118,8 @@ export function ParticleCanvas() {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
-        if (p.x < 0) p.x += w; else if (p.x > w) p.x -= w;
-        if (p.y < 0) p.y += h; else if (p.y > h) p.y -= h;
+        if (p.x < 0) p.x += canvasW; else if (p.x > canvasW) p.x -= canvasW;
+        if (p.y < 0) p.y += canvasH; else if (p.y > canvasH) p.y -= canvasH;
 
         // Mouse repulsion (squared distance, no sqrt)
         const mdx = mouseX - p.x;
