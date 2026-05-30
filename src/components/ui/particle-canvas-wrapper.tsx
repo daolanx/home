@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { isDesktop } from "@/lib/breakpoint";
 
 const ParticleCanvas = dynamic(
   () => import("@/components/ui/particle-canvas").then((mod) => mod.ParticleCanvas),
@@ -12,6 +13,7 @@ export function ParticleCanvasWrapper() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
+    if (!isDesktop()) return;
     const id = requestIdleCallback(() => setShow(true));
     return () => cancelIdleCallback(id);
   }, []);

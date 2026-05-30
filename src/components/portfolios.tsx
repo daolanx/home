@@ -8,19 +8,30 @@ import { getPortfolios } from "@/adapter/portfolios";
 import type { Portfolio } from "@/adapter/types";
 import { PORTFOLIOS_SERVICE } from "@/adapter/constants";
 
+/* ── Constants ── */
+const STAGGER = { header: 0, first: 100, second: 200, gridBase: 300, gridStep: 100 } as const;
+const MAX_PROJECTS = 4;
 
-/* ── Config ── */
-const DELAY = { HEADER: 0, FIRST: 100, SECOND: 200, BOTTOM_BASE: 300, BOTTOM_STEP: 100 } as const;
+/* ── Types ── */
+interface Labels {
+  liveDemo: string;
+  viewSource: string;
+}
 
-/* ── Page component ── */
+/* ── Page Component ── */
 export async function Portfolios() {
   const t = await getTranslations("Showcases");
   const locale = await getLocale();
-  const { data: portfolios } = await getPortfolios(locale);
+  const { data } = await getPortfolios(locale);
 
-  // Only take the first 4 projects
-  const projects = portfolios.slice(0, 4);
-  const [first, second, ...rest] = projects;
+  const projects = data.slice(0, MAX_PROJECTS);
+  const [hero1, hero2, ...gridItems] = projects;
+  const viewAllDelay = STAGGER.gridBase + gridItems.length * STAGGER.gridStep;
+
+  const labels: Labels = {
+    liveDemo: t("liveDemo"),
+    viewSource: t("viewSource"),
+  };
 
   return (
     <section
@@ -30,10 +41,7 @@ export async function Portfolios() {
                  px-6 md:px-12 lg:px-24
                  py-16 md:py-24 lg:py-32"
     >
-      <FadeIn
-        delay={DELAY.HEADER}
-        className="mb-10 md:mb-16"
-      >
+      <FadeIn delay={STAGGER.header} className="mb-10 md:mb-16">
         <div className="border-l-2 border-primary pl-4 md:pl-6">
           <h2 className="font-display-lg text-2xl md:text-5xl lg:text-6xl text-on-surface tracking-tight">
             {t("sectionTitle")}
@@ -42,37 +50,38 @@ export async function Portfolios() {
       </FadeIn>
 
       <div className="space-y-16 md:space-y-24 lg:space-y-32">
-        {first && (
-          <FadeIn delay={DELAY.FIRST}>
-            <ProjectRow project={first} reverse={false} t={t} />
+        {hero1 && (
+          <FadeIn delay={STAGGER.first}>
+            <HeroProject project={hero1} reverse={false} labels={labels} priority />
           </FadeIn>
         )}
 
-        {second && (
-          <FadeIn delay={DELAY.SECOND}>
-            <ProjectRow project={second} reverse={true} t={t} />
+        {hero2 && (
+          <FadeIn delay={STAGGER.second}>
+            <HeroProject project={hero2} reverse={true} labels={labels} />
           </FadeIn>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {rest.map((project, i) => (
-            <FadeIn key={project.id} delay={DELAY.BOTTOM_BASE + i * DELAY.BOTTOM_STEP}>
-              <ProjectCard project={project} t={t} />
-            </FadeIn>
-          ))}
-        </div>
+        {gridItems.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            {gridItems.map((project, i) => (
+              <FadeIn key={project.id} delay={STAGGER.gridBase + i * STAGGER.gridStep}>
+                <GridProject project={project} labels={labels} />
+              </FadeIn>
+            ))}
+          </div>
+        )}
       </div>
 
-      <FadeIn delay={DELAY.BOTTOM_BASE + 100} className="mt-12 md:mt-16 text-center">
+      <FadeIn delay={viewAllDelay} className="mt-12 md:mt-16 text-center">
         <Link
           target="_blank"
           href={PORTFOLIOS_SERVICE.origin}
           className="font-label-caps text-xs md:text-sm
                      text-on-surface-variant hover:text-primary
-                     inline-flex items-center transition-colors
-                     pb-2
+                     inline-flex items-center transition-colors pb-2
                      border-b border-on-surface-variant/30 hover:border-primary
-                     uppercase tracking-widest"
+                     uppercase tracking-widest "
         >
           {t("viewAll")}
           <ArrowRight size={14} className="ml-2" />
@@ -82,15 +91,17 @@ export async function Portfolios() {
   );
 }
 
-/* ── Project row (large projects) ── */
-function ProjectRow({
+/* ── Hero Project (large alternating layout) ── */
+function HeroProject({
   project,
   reverse,
-  t,
+  labels,
+  priority = false,
 }: {
   project: Portfolio;
   reverse: boolean;
-  t: (key: string) => string;
+  labels: Labels;
+  priority?: boolean;
 }) {
   return (
     <article className="group">
@@ -106,11 +117,10 @@ function ProjectRow({
               alt={project.title}
               src={project.previewUrl}
               fill
-              priority
+              priority={priority}
               sizes="(max-width: 768px) 100vw, 58vw"
               className="object-cover object-top
-                         filter
-                          lg:group-hover:scale-105
+                         lg:group-hover:scale-105
                          transition-all duration-1000 ease-out"
             />
           </div>
@@ -123,18 +133,18 @@ function ProjectRow({
           <p className="font-body-lg text-base md:text-lg text-on-surface-variant leading-relaxed max-w-md">
             {project.description}
           </p>
-          <TagsRow tags={project.keywords} variant="separator" />
-          <CaseLink webUrl={project.webUrl} sourceUrl={project.sourceUrl} title={project.title} liveDemoLabel={t("liveDemo")} viewSourceLabel={t("viewSource")} />
+          <KeywordTags tags={project.keywords} />
+          <ProjectLinks project={project} labels={labels} />
         </div>
       </div>
     </article>
   );
 }
 
-/* ── Project card (small projects) ── */
-function ProjectCard({ project, t }: { project: Portfolio; t: (key: string) => string }) {
+/* ── Grid Project (compact card) ── */
+function GridProject({ project, labels }: { project: Portfolio; labels: Labels }) {
   return (
-    <article className="group">
+    <article className="group flex flex-col h-full">
       <h3 className="font-headline-lg text-2xl md:text-3xl text-on-surface mt-4 mb-3 md:mb-4">
         {project.title}
       </h3>
@@ -147,43 +157,36 @@ function ProjectCard({ project, t }: { project: Portfolio; t: (key: string) => s
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover object-top
-                     filter sepia-[.2]
+                     sepia-[.2]
                      lg:group-hover:sepia-0 lg:group-hover:scale-105
                      transition-all duration-1000 ease-out"
         />
       </div>
-      <p className="font-body-lg text-sm md:text-base text-on-surface-variant leading-relaxed mb-6 md:mb-8 line-clamp-3 md:line-clamp-2">
+
+      <p className="font-body-lg text-sm md:text-base text-on-surface-variant leading-relaxed  line-clamp-3 md:line-clamp-2 flex-grow">
         {project.description}
       </p>
-      <TagsRow tags={project.keywords} variant="separator" />
-      <CaseLink webUrl={project.webUrl} sourceUrl={project.sourceUrl} title={project.title} liveDemoLabel={t("liveDemo")} viewSourceLabel={t("viewSource")} />
+      <KeywordTags tags={project.keywords} />
+      <ProjectLinks project={project} labels={labels} />
     </article>
   );
 }
 
-/* ── Atomic components ── */
+/* ── Shared Components ── */
 
-function TagsRow({
-  tags,
-  variant = "plain",
-}: {
-  tags: string[];
-  variant?: "plain" | "underline" | "separator";
-}) {
-  if (!tags.length) return null;
+function KeywordTags({ tags }: { tags: string[] }) {
+  if (!tags?.length) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-3 md:gap-4 my-4 md:my-6">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 my-4 md:my-6">
       {tags.map((tag, i) => (
-        <span key={tag} className="flex items-center gap-2">
-          {variant === "separator" && i > 0 && (
-            <span className="text-surface-variant text-sm">/</span>
+        <span key={tag} className="flex items-center gap-3">
+          {i > 0 && (
+            <span className="text-surface-variant text-sm select-none" aria-hidden="true">
+              /
+            </span>
           )}
-          <span
-            className={`font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant ${
-              variant === "underline" ? "border-b border-surface-variant pb-1" : ""
-            }`}
-          >
+          <span className="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant">
             {tag}
           </span>
         </span>
@@ -192,44 +195,77 @@ function TagsRow({
   );
 }
 
-function CaseLink({ webUrl, sourceUrl, title, liveDemoLabel, viewSourceLabel }: { webUrl: string; sourceUrl: string; title: string; liveDemoLabel: string; viewSourceLabel: string }) {
+function ProjectLinks({ project, labels }: { project: Portfolio; labels: Labels }) {
+  const links = [
+    { href: project.webUrl, label: labels.liveDemo },
+    { href: project.sourceUrl, label: labels.viewSource },
+  ].filter((link) => link.href);
+
+  if (!links.length) return null;
+
   return (
-    <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-6 mt-4 md:mt-0">
-      <Link
-        href={webUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${liveDemoLabel} - ${title}`}
-        className="group/link inline-flex items-center justify-center gap-2
-                   font-label-caps text-[10px] md:text-xs tracking-widest uppercase
-                   border border-on-surface
-                   text-on-surface
-                   px-6 py-3
-                   hover:bg-primary hover:text-on-primary hover:border-primary
-                   transition-all duration-300"
-      >
-        {liveDemoLabel}
-      </Link>
-      <Link
-        href={sourceUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${viewSourceLabel} - ${title}`}
-        className="group/link inline-flex items-center justify-center gap-2
-                   font-label-caps text-[10px] md:text-xs tracking-widest uppercase
-                   border border-on-surface
-                   text-on-surface
-                   px-6 py-3
-                   hover:bg-primary hover:text-on-primary hover:border-primary
-                   transition-all duration-300"
-      >
-        {viewSourceLabel}
-      </Link>
+    <div className="flex flex-row items-center justify-center sm:justify-normal gap-6 sm:gap-4 md:gap-6 mt-4 md:mt-0">
+      {links.map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${link.label} - ${project.title}`}
+          className="inline-flex items-center justify-center
+  font-label-caps text-[10px] md:text-xs tracking-widest uppercase
+  border border-on-surface text-on-surface
+  px-6 py-3 min-w-[140px]
+  hover:bg-primary hover:text-on-primary hover:border-primary
+  transition-all duration-300"
+        >
+          {link.label}
+        </Link>
+      ))}
     </div>
   );
 }
 
-/* ── Loading skeleton ── */
+/* ── Skeleton ── */
+
+function SkeletonBar({ className = "h-4 w-full" }: { className?: string }) {
+  return <div className={`bg-surface-container-high rounded animate-pulse ${className}`} />;
+}
+
+function HeroSkeletonRow({ reverse }: { reverse: boolean }) {
+  return (
+    <div className={`flex flex-col gap-8 lg:gap-16 ${reverse ? "lg:flex-row-reverse" : "lg:flex-row"}`}>
+      <div className="lg:w-7/12">
+        <div className="aspect-[4/3] bg-surface-container-high rounded animate-pulse" />
+      </div>
+      <div className="lg:w-5/12 flex flex-col justify-center space-y-4">
+        <SkeletonBar className="h-8 md:h-10 w-3/4" />
+        <SkeletonBar />
+        <SkeletonBar className="w-2/3" />
+        <div className="flex gap-4 mt-4">
+          <SkeletonBar className="h-3 w-16" />
+          <SkeletonBar className="h-3 w-16" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GridCardSkeleton() {
+  return (
+    <div className="space-y-4">
+      <SkeletonBar className="h-6 md:h-8 w-3/4" />
+      <div className="aspect-[4/3] bg-surface-container-high rounded animate-pulse" />
+      <SkeletonBar />
+      <SkeletonBar className="w-2/3" />
+      <div className="flex gap-4 mt-4">
+        <SkeletonBar className="h-3 w-16" />
+        <SkeletonBar className="h-3 w-16" />
+      </div>
+    </div>
+  );
+}
+
 export function PortfoliosSkeleton() {
   return (
     <section
@@ -239,61 +275,20 @@ export function PortfoliosSkeleton() {
                  px-6 md:px-12 lg:px-24
                  py-16 md:py-24 lg:py-32"
     >
-      {/* Header skeleton */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-6">
         <div className="max-w-2xl border-l-2 border-primary pl-6">
-          <div className="h-10 md:h-12 lg:h-14 w-48 bg-surface-container-high rounded animate-pulse" />
+          <SkeletonBar className="h-10 md:h-12 lg:h-14 w-48" />
         </div>
-        <div className="h-4 w-20 bg-surface-container-high rounded animate-pulse self-start md:self-auto" />
+        <SkeletonBar className="h-4 w-20 self-start md:self-auto" />
       </div>
 
       <div className="space-y-16 md:space-y-24 lg:space-y-32">
-        {/* First project row skeleton */}
-        <div className="flex flex-col gap-8 lg:gap-16 lg:flex-row">
-          <div className="lg:w-7/12">
-            <div className="aspect-[4/3] bg-surface-container-high rounded animate-pulse" />
-          </div>
-          <div className="lg:w-5/12 flex flex-col justify-center space-y-4">
-            <div className="h-8 md:h-10 w-3/4 bg-surface-container-high rounded animate-pulse" />
-            <div className="h-4 w-full bg-surface-container-high rounded animate-pulse" />
-            <div className="h-4 w-2/3 bg-surface-container-high rounded animate-pulse" />
-            <div className="flex gap-4 mt-4">
-              <div className="h-3 w-16 bg-surface-container-high rounded animate-pulse" />
-              <div className="h-3 w-16 bg-surface-container-high rounded animate-pulse" />
-            </div>
-          </div>
-        </div>
+        <HeroSkeletonRow reverse={false} />
+        <HeroSkeletonRow reverse={true} />
 
-        {/* Second project row skeleton (reversed) */}
-        <div className="flex flex-col gap-8 lg:gap-16 lg:flex-row-reverse">
-          <div className="lg:w-7/12">
-            <div className="aspect-[4/3] bg-surface-container-high rounded animate-pulse" />
-          </div>
-          <div className="lg:w-5/12 flex flex-col justify-center space-y-4">
-            <div className="h-8 md:h-10 w-3/4 bg-surface-container-high rounded animate-pulse" />
-            <div className="h-4 w-full bg-surface-container-high rounded animate-pulse" />
-            <div className="h-4 w-2/3 bg-surface-container-high rounded animate-pulse" />
-            <div className="flex gap-4 mt-4">
-              <div className="h-3 w-16 bg-surface-container-high rounded animate-pulse" />
-              <div className="h-3 w-16 bg-surface-container-high rounded animate-pulse" />
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom cards skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {[1, 2].map((i) => (
-            <div key={i} className="space-y-4">
-              <div className="h-6 md:h-8 w-3/4 bg-surface-container-high rounded animate-pulse" />
-              <div className="aspect-[4/3] bg-surface-container-high rounded animate-pulse" />
-              <div className="h-4 w-full bg-surface-container-high rounded animate-pulse" />
-              <div className="h-4 w-2/3 bg-surface-container-high rounded animate-pulse" />
-              <div className="flex gap-4 mt-4">
-                <div className="h-3 w-16 bg-surface-container-high rounded animate-pulse" />
-                <div className="h-3 w-16 bg-surface-container-high rounded animate-pulse" />
-              </div>
-            </div>
-          ))}
+          <GridCardSkeleton />
+          <GridCardSkeleton />
         </div>
       </div>
     </section>
