@@ -24,7 +24,7 @@ const hankenGrotesk = Hanken_Grotesk({
 
 const spaceMono = Space_Mono({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: "400",
   variable: "--font-space-mono",
   display: "swap",
 });
@@ -137,7 +137,7 @@ export default async function LocaleLayout({
           {children}
         </NextIntlClientProvider>
         <Script
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           src="https://cloud.umami.is/script.js"
           data-website-id={UMAMI_WEBSITE_ID}
         />

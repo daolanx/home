@@ -56,9 +56,7 @@ export async function Portfolios() {
 
       <div className="space-y-16 md:space-y-24 lg:space-y-32">
         {first && (
-          <FadeIn delay={DELAY.FIRST}>
-            <ProjectRow project={first} reverse={false} t={t} />
-          </FadeIn>
+          <ProjectRow project={first} reverse={false} t={t} />
         )}
 
         {second && (
@@ -103,6 +101,7 @@ function ProjectRow({
               alt={project.title}
               src={project.previewUrl}
               fill
+              priority
               sizes="(max-width: 768px) 100vw, 58vw"
               className="object-cover object-top
                          filter
