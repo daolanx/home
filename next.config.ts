@@ -5,12 +5,13 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
 	images: {
-		remotePatterns: [
-			{
-				protocol: "https",
-				hostname: "demo.daolanx.com",
-			},
-		],
+		loader: "custom",
+		loaderFile: "./src/lib/image-loader.ts",
+		deviceSizes: [480, 640, 828, 1120, 1920],
+		imageSizes: [64, 256],
+	},
+	experimental: {
+		optimizePackageImports: ["motion/react", "lucide-react"],
 	},
 };
 
