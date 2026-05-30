@@ -1,30 +1,27 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { isDesktop } from "@/lib/breakpoint";
 
 /* ── Config ── */
 const CONFIG = {
-  DENSITY: 10000,            // Pixel area per particle
-  MAX: 100,                  // Maximum particle count
+  DENSITY: 10000,
+  MAX: 100,
   SIZE_MIN: 0.5,
   SIZE_RANGE: 1.5,
   SPEED: 0.5,
   OPACITY_MIN: 0.1,
   OPACITY_RANGE: 0.3,
-
-  MOUSE_RADIUS: 150,         // Mouse repulsion radius
+  MOUSE_RADIUS: 150,
   MOUSE_STRENGTH: 0.01,
-
-  LINK_DIST: 100,            // Maximum line distance
-  LINK_OPACITY: 0.1,         // Maximum line opacity
+  LINK_DIST: 100,
+  LINK_OPACITY: 0.1,
   LINK_WIDTH: 0.5,
 } as const;
 
-// Pre-calculate squared values to avoid sqrt in hot loop
 const MOUSE_RADIUS_SQ = CONFIG.MOUSE_RADIUS ** 2;
 const LINK_DIST_SQ = CONFIG.LINK_DIST ** 2;
 
-/* ── Particle struct (pure data, no prototype chain overhead) ── */
 interface Particle {
   x: number;
   y: number;
@@ -55,14 +52,15 @@ export function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // Respect reduced-motion preference
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Skip entirely on mobile
+    if (!isDesktop()) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
-    // Accessibility: respect reduced motion preference
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const dpr = window.devicePixelRatio || 1;
     let particles: Particle[] = [];
@@ -96,7 +94,7 @@ export function ParticleCanvas() {
 
       ctx!.clearRect(0, 0, w, h);
 
-      // ── Draw lines ──
+      // Draw connection lines
       ctx!.lineWidth = CONFIG.LINK_WIDTH;
       for (let i = 0; i < len; i++) {
         const a = particles[i];
@@ -105,10 +103,8 @@ export function ParticleCanvas() {
           const dx = a.x - b.x;
           const dy = a.y - b.y;
           const distSq = dx * dx + dy * dy;
-
           if (distSq < LINK_DIST_SQ) {
-            const alpha = CONFIG.LINK_OPACITY * (1 - distSq / LINK_DIST_SQ);
-            ctx!.strokeStyle = `rgba(0,0,0,${alpha})`;
+            ctx!.strokeStyle = `rgba(0,0,0,${CONFIG.LINK_OPACITY * (1 - distSq / LINK_DIST_SQ)})`;
             ctx!.beginPath();
             ctx!.moveTo(a.x, a.y);
             ctx!.lineTo(b.x, b.y);
@@ -117,21 +113,15 @@ export function ParticleCanvas() {
         }
       }
 
-      // ── Update & draw particles ──
+      // Update and draw particles
       for (let i = 0; i < len; i++) {
         const p = particles[i];
-
-        // Move particle
         p.x += p.vx;
         p.y += p.vy;
+        if (p.x < 0) p.x += w; else if (p.x > w) p.x -= w;
+        if (p.y < 0) p.y += h; else if (p.y > h) p.y -= h;
 
-        // Wrap around edges
-        if (p.x < 0) p.x += w;
-        else if (p.x > w) p.x -= w;
-        if (p.y < 0) p.y += h;
-        else if (p.y > h) p.y -= h;
-
-        // Mouse repulsion (squared distance comparison, no sqrt)
+        // Mouse repulsion (squared distance, no sqrt)
         const mdx = mouseX - p.x;
         const mdy = mouseY - p.y;
         if (mdx * mdx + mdy * mdy < MOUSE_RADIUS_SQ) {
@@ -139,7 +129,6 @@ export function ParticleCanvas() {
           p.y -= mdy * CONFIG.MOUSE_STRENGTH;
         }
 
-        // Draw particle
         ctx!.fillStyle = `rgba(0,0,0,${p.opacity})`;
         ctx!.beginPath();
         ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -156,7 +145,6 @@ export function ParticleCanvas() {
     }
 
     function handleMouseLeave() {
-      // Mouse left viewport, reset repulsion point to infinity
       mouseX = -Infinity;
       mouseY = -Infinity;
     }
