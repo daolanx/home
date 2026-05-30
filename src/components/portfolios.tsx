@@ -1,6 +1,7 @@
 // components/portfolios.tsx
 import { getTranslations, getLocale } from "next-intl/server";
 import Link from "next/link";
+import Image from "next/image";
 import { FadeIn } from "@/components/ui/fade-in";
 import { getPortfolios } from "@/adapter/portfolios";
 import type { Portfolio } from "@/adapter/types";
@@ -98,11 +99,13 @@ function ProjectRow({
         <div className="lg:w-7/12 transition-transform duration-700 ease-out lg:group-hover:-translate-y-2">
           <div className="relative aspect-[4/3] overflow-hidden bg-surface-container">
             <div className="absolute inset-0 bg-primary/5 lg:group-hover:bg-transparent transition-colors duration-700 z-10 mix-blend-multiply" />
-            <img
+            <Image
               alt={project.title}
               src={project.previewUrl}
-              className="w-full h-full object-cover object-top
-                         filter 
+              fill
+              sizes="(max-width: 768px) 100vw, 58vw"
+              className="object-cover object-top
+                         filter
                           lg:group-hover:scale-105
                          transition-all duration-1000 ease-out"
             />
@@ -134,10 +137,12 @@ function ProjectCard({ project, t }: { project: Portfolio; t: (key: string) => s
 
       <div className="relative aspect-[4/3] overflow-hidden bg-surface-container mb-6">
         <div className="absolute inset-0 bg-primary/10 lg:group-hover:bg-transparent transition-colors duration-700 z-10" />
-        <img
+        <Image
           alt={project.title}
           src={project.previewUrl}
-          className="w-full h-full object-cover object-top
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover object-top
                      filter sepia-[.2]
                      lg:group-hover:sepia-0 lg:group-hover:scale-105
                      transition-all duration-1000 ease-out"
