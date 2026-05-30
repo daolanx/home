@@ -32,27 +32,13 @@ export async function Portfolios() {
     >
       <FadeIn
         delay={DELAY.HEADER}
-        className="flex flex-col md:flex-row md:items-end justify-between
-                   mb-16 md:mb-24 gap-6"
+        className="mb-10 md:mb-16"
       >
-        <div className="max-w-2xl border-l-2 border-primary pl-6">
-          <h2 className="font-display-lg text-4xl md:text-5xl lg:text-6xl text-on-surface tracking-tight">
+        <div className="border-l-2 border-primary pl-4 md:pl-6">
+          <h2 className="font-display-lg text-2xl md:text-5xl lg:text-6xl text-on-surface tracking-tight">
             {t("sectionTitle")}
           </h2>
         </div>
-        <Link
-          target="_blank"
-          href={PORTFOLIOS_SERVICE.origin}
-          className="font-label-caps text-[10px] md:text-xs
-                     text-on-surface-variant hover:text-primary
-                     inline-flex items-center transition-colors
-                     pb-2 self-start md:self-auto
-                     border-b border-on-surface-variant/30 hover:border-primary
-                     uppercase tracking-widest"
-        >
-          {t("viewAll")}
-          <ArrowRight size={14} className="ml-2" />
-        </Link>
       </FadeIn>
 
       <div className="space-y-16 md:space-y-24 lg:space-y-32">
@@ -76,6 +62,22 @@ export async function Portfolios() {
           ))}
         </div>
       </div>
+
+      <FadeIn delay={DELAY.BOTTOM_BASE + 100} className="mt-12 md:mt-16 text-center">
+        <Link
+          target="_blank"
+          href={PORTFOLIOS_SERVICE.origin}
+          className="font-label-caps text-xs md:text-sm
+                     text-on-surface-variant hover:text-primary
+                     inline-flex items-center transition-colors
+                     pb-2
+                     border-b border-on-surface-variant/30 hover:border-primary
+                     uppercase tracking-widest"
+        >
+          {t("viewAll")}
+          <ArrowRight size={14} className="ml-2" />
+        </Link>
+      </FadeIn>
     </section>
   );
 }
@@ -192,12 +194,12 @@ function TagsRow({
 
 function CaseLink({ webUrl, sourceUrl, liveDemoLabel, viewSourceLabel }: { webUrl: string; sourceUrl: string; liveDemoLabel: string; viewSourceLabel: string }) {
   return (
-    <div className="flex items-center gap-6">
+    <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-6 mt-4 md:mt-0">
       <Link
         href={webUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="group/link inline-flex items-center gap-2 self-start
+        className="group/link inline-flex items-center justify-center gap-2
                    font-label-caps text-[10px] md:text-xs tracking-widest uppercase
                    border border-on-surface
                    text-on-surface
@@ -206,22 +208,20 @@ function CaseLink({ webUrl, sourceUrl, liveDemoLabel, viewSourceLabel }: { webUr
                    transition-all duration-300"
       >
         {liveDemoLabel}
-
       </Link>
       <Link
         href={sourceUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="group/link inline-flex items-center gap-2 self-start
+        className="group/link inline-flex items-center justify-center gap-2
                    font-label-caps text-[10px] md:text-xs tracking-widest uppercase
                    border border-on-surface
                    text-on-surface
-                  px-6 py-3
+                   px-6 py-3
                    hover:bg-primary hover:text-on-primary hover:border-primary
                    transition-all duration-300"
       >
         {viewSourceLabel}
-
       </Link>
     </div>
   );

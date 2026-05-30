@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import { FadeIn } from "@/components/ui/fade-in";
 import Link from "next/link";
 import { SOCIAL_LINKS } from "@/constants";
 import { Mail } from "lucide-react";
@@ -24,8 +23,8 @@ export async function Hero() {
   const t = await getTranslations("Hero");
   return (
     <section
-      className="relative flex min-h-[90vh] flex-col justify-center overflow-hidden
-                 px-6 md:px-12 lg:px-24 py-20 md:py-26 lg:py-30"
+      className="relative flex min-h-[70vh] md:min-h-[90vh] flex-col justify-center overflow-hidden
+                 px-6 md:px-12 lg:px-24 py-12 md:py-20 lg:py-30"
     >
       <div className="relative z-10 mx-auto max-w-4xl">
         <div className="relative">
@@ -58,39 +57,35 @@ export async function Hero() {
             className="md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3
                        border-l-2 border-primary pl-6 md:pl-8 py-2"
           >
-            <FadeIn delay={100}>
-              <p className="font-body-lg text-base md:text-lg text-on-surface-variant leading-relaxed">
-                {t("description")}
-              </p>
-            </FadeIn>
+            <p className="font-body-lg text-base md:text-lg text-on-surface-variant leading-relaxed">
+              {t("description")}
+            </p>
           </div>
         </div>
 
-        <FadeIn delay={200}>
-          <div className="mt-14 md:mt-20">
-            <div className="flex flex-wrap items-stretch gap-3 md:gap-4">
-              {[SOCIAL_LINKS.github, SOCIAL_LINKS.twitter, SOCIAL_LINKS.email].map((link) => {
-                const Icon = link.icon === "github" ? GithubIcon : link.icon === "twitter" ? TwitterIcon : Mail;
-                return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  aria-label={link.label}
-                  className="group relative flex items-center gap-3 px-5 py-3.5 md:px-6 md:py-4
-                             border border-surface-variant rounded-lg
-                             text-on-surface-variant hover:text-primary hover:border-primary
-                             transition-all duration-300"
-                >
-                  <Icon className="w-[22px] h-[22px] md:w-[24px] md:h-[24px]" />
-                  <span className="font-label-caps text-sm md:text-base tracking-widest uppercase">
-                    {link.label}
-                  </span>
-                </Link>
-              )})}
-            </div>
+        <div className="mt-10 md:mt-20">
+          <div className="flex items-stretch gap-3 md:gap-4">
+            {[SOCIAL_LINKS.github, SOCIAL_LINKS.twitter, SOCIAL_LINKS.email].map((link) => {
+              const Icon = link.icon === "github" ? GithubIcon : link.icon === "twitter" ? TwitterIcon : Mail;
+              return (
+              <Link
+                key={link.label}
+                href={link.href}
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                aria-label={link.label}
+                className="group relative flex items-center justify-center p-3.5 md:px-6 md:py-4 md:gap-3
+                           border border-on-surface
+                           text-on-surface hover:bg-primary hover:text-on-primary hover:border-primary
+                           transition-all duration-300"
+              >
+                <Icon className="w-[22px] h-[22px] md:w-6 md:h-6" />
+                <span className="hidden md:inline font-label-caps text-sm md:text-base tracking-widest uppercase">
+                  {link.label}
+                </span>
+              </Link>
+            )})}
           </div>
-        </FadeIn>
+        </div>
       </div>
     </section>
   );

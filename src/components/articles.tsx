@@ -13,13 +13,10 @@ export async function Articles() {
 
   return (
     <section className="max-w-[1280px] mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32 border-t border-surface-variant" id="blog">
-      <FadeIn className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
-        <div className="max-w-2xl border-l-2 border-primary pl-6">
-          <h2 className="font-display-lg text-3xl md:text-4xl lg:text-5xl text-on-surface tracking-tight">{t("sectionTitle")}</h2>
+      <FadeIn className="mb-10 md:mb-16">
+        <div className="border-l-2 border-primary pl-4 md:pl-6">
+          <h2 className="font-display-lg text-2xl md:text-4xl lg:text-5xl text-on-surface tracking-tight">{t("sectionTitle")}</h2>
         </div>
-        <Link className="font-label-caps text-[10px] md:text-xs text-on-surface-variant hover:text-primary inline-flex items-center transition-colors pb-2 border-b border-on-surface-variant/30 hover:border-primary uppercase tracking-widest self-start md:self-auto" href={`${ARTICLES_SERVICE.origin}/${locale}/`} target="_blank" rel="noopener noreferrer">
-          {t("viewAll")} <ArrowRight size={14} className="ml-2" />
-        </Link>
       </FadeIn>
 
       <div className="flex flex-col border-t border-surface-variant">
@@ -42,6 +39,12 @@ export async function Articles() {
           </FadeIn>
         ))}
       </div>
+
+      <FadeIn className="mt-12 md:mt-16 text-center">
+        <Link className="font-label-caps text-xs md:text-sm text-on-surface-variant hover:text-primary inline-flex items-center transition-colors pb-2 border-b border-on-surface-variant/30 hover:border-primary uppercase tracking-widest" href={`${ARTICLES_SERVICE.origin}/${locale}/`} target="_blank" rel="noopener noreferrer">
+          {t("viewAll")} <ArrowRight size={14} className="ml-2" />
+        </Link>
+      </FadeIn>
     </section>
   );
 }
@@ -49,11 +52,10 @@ export async function Articles() {
 export function ArticlesSkeleton() {
   return (
     <section className="max-w-[1280px] mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32 border-t border-surface-variant" id="blog">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
-        <div className="max-w-2xl border-l-2 border-primary pl-6">
-          <div className="h-10 md:h-12 lg:h-14 w-48 bg-surface-container-high rounded animate-pulse" />
+      <div className="mb-10 md:mb-16">
+        <div className="border-l-2 border-primary pl-4 md:pl-6">
+          <div className="h-8 md:h-10 lg:h-12 w-48 bg-surface-container-high rounded animate-pulse" />
         </div>
-        <div className="h-4 w-20 bg-surface-container-high rounded animate-pulse self-start md:self-auto" />
       </div>
 
       <div className="flex flex-col border-t border-surface-variant">

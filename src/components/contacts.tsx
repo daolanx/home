@@ -56,11 +56,7 @@ function SocialLink({
     >
       <Mail size={18} aria-hidden="true" />
       {label}
-      <ExternalLink
-        size={16}
-        className="opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-300"
-        aria-hidden="true"
-      />
+     
     </Link>
   );
 }
