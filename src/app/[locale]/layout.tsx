@@ -64,7 +64,13 @@ export async function generateMetadata({
     creator: "Dax",
     publisher: "Dax",
     metadataBase: new URL(SITE_ORIGIN),
-    alternates: { canonical: "/" },
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        en: "/en",
+        zh: "/zh",
+      },
+    },
     robots: { index: true, follow: true },
     icons: {
       icon: "/favicon.png", 
