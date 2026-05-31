@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Hanken_Grotesk, Space_Mono, Geist } from "next/font/google";
+import { Playfair_Display, Hanken_Grotesk, Space_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import Script from "next/script";
@@ -27,17 +27,10 @@ const spaceMono = Space_Mono({
   display: "swap",
  });
 
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist",
-  display: "swap",
-});
-
 const fontClass = [
   playfairDisplay.variable,
   hankenGrotesk.variable,
   spaceMono.variable,
-  geist.variable,
 ].join(" ");
 
 // ── Viewport ─────────────────────────────────────────────────────────────────
@@ -64,20 +57,21 @@ export async function generateMetadata({
     publisher: "Dax",
     metadataBase: new URL(SITE_ORIGIN),
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `${SITE_ORIGIN}/${locale}`,
       languages: {
-        en: "/en",
-        zh: "/zh",
+        en: `${SITE_ORIGIN}/en`,
+        zh: `${SITE_ORIGIN}/zh`,
+        "x-default": `${SITE_ORIGIN}/en`,
       },
     },
     robots: { index: true, follow: true },
     icons: {
-      icon: "/favicon.png", 
+      icon: "/favicon.png",
     },
     openGraph: {
       type: "website",
       locale: m.locale,
-      url: SITE_ORIGIN,
+      url: `${SITE_ORIGIN}/${locale}`,
       title: m.title,
       description: m.shortDescription,
       siteName: "Dax",
