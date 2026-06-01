@@ -58,11 +58,11 @@ export async function generateMetadata({
     publisher: "Dax",
     metadataBase: new URL(SITE_ORIGIN),
     alternates: {
-      canonical: `${SITE_ORIGIN}/${locale}`,
+      canonical: `/${locale}`,
       languages: {
-        en: `${SITE_ORIGIN}/en`,
-        zh: `${SITE_ORIGIN}/zh`,
-        "x-default": `${SITE_ORIGIN}/en`,
+        en: `/en`,
+        zh: `/zh`,
+        "x-default": `/en`,
       },
     },
     robots: { index: true, follow: true },
@@ -72,7 +72,7 @@ export async function generateMetadata({
     openGraph: {
       type: "website",
       locale: m.locale,
-      url: `${SITE_ORIGIN}/${locale}`,
+      url: `/${locale}`,
       title: m.title,
       description: m.shortDescription,
       siteName: "Dax",
