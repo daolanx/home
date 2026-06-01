@@ -1,4 +1,8 @@
 {
+  "Header": {
+    "work": "作品",
+    "blog": "博客"
+  },
   "Hero": {
     "greeting": "你好，我是 Dax,",
     "role": "前端独立开发者",

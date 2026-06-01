@@ -1,4 +1,8 @@
 {
+  "Header": {
+    "work": "Work",
+    "blog": "Blog"
+  },
   "Hero": {
     "greeting": "Hi, I'm Dax,",
     "role": "Freelance Frontend Developer",
