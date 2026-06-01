@@ -2,8 +2,8 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight, Image as ImageIcon } from "lucide-react";
 import { FadeIn } from "@/components/ui/fade-in";
-import { ArrowRight } from "lucide-react";
 import { getPortfolios } from "@/adapter/portfolios";
 import type { Portfolio } from "@/adapter/types";
 import { PORTFOLIOS_SERVICE } from "@/adapter/constants";
@@ -229,22 +229,36 @@ function ProjectLinks({ project, labels }: { project: Portfolio; labels: Labels 
 /* ── Skeleton ── */
 
 function SkeletonBar({ className = "h-4 w-full" }: { className?: string }) {
-  return <div className={`bg-surface-container-high rounded animate-pulse ${className}`} />;
+  return <div className={`bg-surface-variant/40 rounded animate-pulse ${className}`} />;
 }
 
 function HeroSkeletonRow({ reverse }: { reverse: boolean }) {
   return (
     <div className={`flex flex-col gap-8 lg:gap-16 ${reverse ? "lg:flex-row-reverse" : "lg:flex-row"}`}>
       <div className="lg:w-7/12">
-        <div className="aspect-[4/3] bg-surface-container-high rounded animate-pulse" />
+        <div className="aspect-[4/3] bg-surface-container-high rounded animate-pulse flex items-center justify-center">
+          <ImageIcon className="w-12 h-12 text-surface-variant/30" strokeWidth={1.5} />
+        </div>
       </div>
-      <div className="lg:w-5/12 flex flex-col justify-center space-y-4">
-        <SkeletonBar className="h-8 md:h-10 w-3/4" />
-        <SkeletonBar />
-        <SkeletonBar className="w-2/3" />
-        <div className="flex gap-4 mt-4">
-          <SkeletonBar className="h-3 w-16" />
-          <SkeletonBar className="h-3 w-16" />
+      
+      <div className="lg:w-5/12 flex flex-col justify-center">
+        <SkeletonBar className="h-8 md:h-10 w-3/4 mt-6 mb-4 md:mb-6" />
+        
+        <div className="space-y-3 max-w-md">
+          <SkeletonBar className="h-4 w-full" />
+          <SkeletonBar className="h-4 w-[90%]" />
+          <SkeletonBar className="h-4 w-[75%]" />
+        </div>
+        
+        <div className="flex flex-wrap gap-3 my-4 md:my-6">
+          <SkeletonBar className="h-3 w-12 rounded-full" />
+          <SkeletonBar className="h-3 w-16 rounded-full" />
+          <SkeletonBar className="h-3 w-14 rounded-full" />
+        </div>
+        
+        <div className="flex flex-row items-center justify-center sm:justify-normal gap-6 sm:gap-4 md:gap-6 mt-4 md:mt-0">
+          <SkeletonBar className="h-10 md:h-12 w-[140px] rounded-none" />
+          <SkeletonBar className="h-10 md:h-12 w-[140px] rounded-none" />
         </div>
       </div>
     </div>
@@ -253,14 +267,26 @@ function HeroSkeletonRow({ reverse }: { reverse: boolean }) {
 
 function GridCardSkeleton() {
   return (
-    <div className="space-y-4">
-      <SkeletonBar className="h-6 md:h-8 w-3/4" />
-      <div className="aspect-[4/3] bg-surface-container-high rounded animate-pulse" />
-      <SkeletonBar />
-      <SkeletonBar className="w-2/3" />
-      <div className="flex gap-4 mt-4">
-        <SkeletonBar className="h-3 w-16" />
-        <SkeletonBar className="h-3 w-16" />
+    <div className="flex flex-col h-full">
+      <SkeletonBar className="h-7 md:h-8 w-2/3 mt-4 mb-3 md:mb-4" />
+      
+      <div className="relative aspect-[4/3] bg-surface-container-high rounded animate-pulse mb-6 flex items-center justify-center">
+        <ImageIcon className="w-10 h-10 text-surface-variant/30" strokeWidth={1.5} />
+      </div>
+      
+      <div className="space-y-3 flex-grow">
+        <SkeletonBar className="h-4 w-full" />
+        <SkeletonBar className="h-4 w-[85%]" />
+      </div>
+      
+      <div className="flex flex-wrap gap-3 my-4 md:my-6">
+        <SkeletonBar className="h-3 w-14 rounded-full" />
+        <SkeletonBar className="h-3 w-10 rounded-full" />
+      </div>
+      
+      <div className="flex flex-row items-center justify-center sm:justify-normal gap-6 sm:gap-4 md:gap-6 mt-4 md:mt-0">
+        <SkeletonBar className="h-10 w-[120px] md:min-w-[140px] rounded-none" />
+        <SkeletonBar className="h-10 w-[120px] md:min-w-[140px] rounded-none" />
       </div>
     </div>
   );
@@ -275,11 +301,10 @@ export function PortfoliosSkeleton() {
                  px-6 md:px-12 lg:px-24
                  py-16 md:py-24 lg:py-32"
     >
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-6">
-        <div className="max-w-2xl border-l-2 border-primary pl-6">
-          <SkeletonBar className="h-10 md:h-12 lg:h-14 w-48" />
+      <div className="mb-10 md:mb-16">
+        <div className="border-l-2 border-primary/30 pl-4 md:pl-6 py-1">
+          <SkeletonBar className="h-8 md:h-12 lg:h-14 w-48 md:w-64" />
         </div>
-        <SkeletonBar className="h-4 w-20 self-start md:self-auto" />
       </div>
 
       <div className="space-y-16 md:space-y-24 lg:space-y-32">
@@ -290,6 +315,10 @@ export function PortfoliosSkeleton() {
           <GridCardSkeleton />
           <GridCardSkeleton />
         </div>
+      </div>
+      
+      <div className="mt-12 md:mt-16 flex justify-center">
+        <SkeletonBar className="h-5 w-24 rounded-full" />
       </div>
     </section>
   );

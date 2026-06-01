@@ -49,25 +49,43 @@ export async function Articles() {
   );
 }
 
+function SkeletonBar({ className = "h-4 w-full" }: { className?: string }) {
+  return <div className={`bg-surface-variant/40 rounded animate-pulse ${className}`} />;
+}
+
 export function ArticlesSkeleton() {
   return (
-    <section className="max-w-[1280px] mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32 border-t border-surface-variant" id="blog">
+    <section
+      id="blog"
+      className="max-w-[1280px] mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-24 lg:py-32 border-t border-surface-variant"
+    >
       <div className="mb-10 md:mb-16">
-        <div className="border-l-2 border-primary pl-4 md:pl-6">
-          <div className="h-8 md:h-10 lg:h-12 w-48 bg-surface-container-high rounded animate-pulse" />
+        <div className="border-l-2 border-primary/30 pl-4 md:pl-6 py-1">
+          <SkeletonBar className="h-8 md:h-10 lg:h-12 w-48 md:w-64" />
         </div>
       </div>
 
       <div className="flex flex-col border-t border-surface-variant">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="py-8 md:py-10 border-b border-surface-variant flex flex-col lg:flex-row lg:items-center justify-between gap-4 md:gap-6 px-4 -mx-4">
-            <div className="flex-1 space-y-3">
-              <div className="h-3 w-16 bg-surface-container-high rounded animate-pulse" />
-              <div className="h-6 w-3/4 bg-surface-container-high rounded animate-pulse" />
+          <div
+            key={i}
+            className="py-8 md:py-10 border-b border-surface-variant flex flex-col lg:flex-row lg:items-center justify-between gap-4 md:gap-6 px-4 -mx-4"
+          >
+            <div className="flex-1 space-y-4">
+              <SkeletonBar className="h-3 w-24 rounded-full" />
+              <SkeletonBar className="h-6 md:h-8 w-3/4" />
             </div>
-            <div className="h-3 w-24 bg-surface-container-high rounded animate-pulse shrink-0" />
+            
+            <div className="flex items-center gap-4 shrink-0">
+              <SkeletonBar className="h-4 w-24" />
+              <div className="w-5 h-5 rounded-full bg-surface-variant/40" />
+            </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-12 md:mt-16 flex justify-center">
+        <SkeletonBar className="h-5 w-24 rounded-full" />
       </div>
     </section>
   );
