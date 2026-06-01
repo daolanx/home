@@ -114,7 +114,7 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html lang={locale} className={fontClass}>
+    <html lang={locale} className={fontClass} suppressHydrationWarning>
       <head>
       
         <link rel="preconnect" href="https://cloud.umami.is" crossOrigin="anonymous" />
