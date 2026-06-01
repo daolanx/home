@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
+import { SITE_ORIGIN } from "@/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://dax.studio",
+      url: SITE_ORIGIN,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
