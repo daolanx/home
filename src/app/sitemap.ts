@@ -14,9 +14,15 @@ function createI18nEntries(
 ): MetadataRoute.Sitemap {
   const cleanPath = path === "/" ? "" : path;
 
-  const languagesMap = Object.fromEntries(
-    LOCALES.map((locale) => [locale, `${SITE_ORIGIN}/${locale}${cleanPath}`])
-  );
+
+  const languagesMap: Record<string, string> = {
+    "x-default": `${SITE_ORIGIN}${cleanPath === "" ? "/" : cleanPath}`,
+  };
+
+  // 动态合并 en 和 zh 的链接
+  LOCALES.forEach((locale) => {
+    languagesMap[locale] = `${SITE_ORIGIN}/${locale}${cleanPath}`;
+  });
 
   return LOCALES.map((locale) => ({
     url: `${SITE_ORIGIN}/${locale}${cleanPath}`,
@@ -31,24 +37,6 @@ function createI18nEntries(
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    // Root domain entry (https://daolanx.com redirects to /en)
-    {
-      url: SITE_ORIGIN,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-      alternates: {
-        languages: Object.fromEntries(
-          LOCALES.map((locale) => [locale, `${SITE_ORIGIN}/${locale}`])
-        ),
-      },
-    },
-
-    // All locale variants of the homepage
     ...createI18nEntries("/", 1.0, "weekly"),
-
-    // Future pages — uncomment when ready:
-    // ...createI18nEntries("/tools", 0.8),
-    // ...createI18nEntries("/about", 0.5),
   ];
 }
